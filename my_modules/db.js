@@ -1,16 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const db_funcs = require("./db");
 
-
-// const TABLE_STRUCT = {
-//   "users" : "users(user_id) VALUES(?)",
-//   "criterion_1" : "criterion_1(user_id, grade_1, grade_2) VALUES(?)",
-//   "criterion_2" : "criterion_1(user_id, grade_1, grade_2) VALUES(?, ?)",
-//   "criterion_3" : "criterion_1(user_id, grade_1, grade_2, grade_3, grade_4) VALUES(?, ?, ?, ?)",
-//   "criterion_4" : "criterion_1(user_id, grade_1, grade_2) VALUES(?, ?)",
-//   "criterion_5" : "criterion_1(user_id, grade_1, grade_2, grade_3, grade_4, grade_5) VALUES(?, ?, ?, ?, ?)",
-// };
-
 const TABLE_STRUCT = {
   "users" : "users(user_id) VALUES(?)",
   "criterion_1" : "criterion_1(user_id) VALUES(?)",
@@ -53,10 +43,10 @@ module.exports.open = async function (filename) {
   return db;
 }
 
-module.exports.set_grade = async function (db, user_id, criterion, grade_num, grade) {
+module.exports.add_grade = async function (db, user_id, criterion, grade_num, grade) {
   const data = [grade, user_id];
   const sql = `UPDATE criterion_${criterion}
-              SET grade_${grade_num} = ?
+              SET grade_${grade_num} = grade_${grade_num} + ?
               WHERE user_id = ?`;
   db.run(sql, data, function(err) {
     if (err) {
