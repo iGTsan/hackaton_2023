@@ -10,88 +10,59 @@ GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="a
     <title>Профиль</title>
 </head>
 <body>
-  <div class="logo">
-  <a href="profile.html">
+  <!--<div class="logo">
+  <a href="https://rosatom-academy.ru/">
     <img src="img/korp.png" class="d-inline-block align-top" alt="" class="d-inline-block align-top" alt=""></a>
-  </div>
+  </div>-->
  
   <div class="grad">
-      <ul class="hr">
-        <li>Главная</li>
-        <li>Загрузка</li>
+      <ul>
+        <li><a class="navbar-brand" href="profile_hr.html">Главная</a></li>
+        <li><a class="navbar-brand" href="add_file.html">Загрузка</a></li>
+        <li><a class="navbar-brand" href="table_all.html">Общая таблица</a></li>
       </ul>
-    <h1>Профиль</h1>
-</div>
-  <div class="table_crit">
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th scope="col" colspan="1">Критерий 1</th>
-        <th scope="col" colspan="1">Критерий 2</th>
-        <th scope="col" colspan="1">Критерий 3</th>
-        <th scope="col" colspan="1">Критерий 4</th>
-        <th scope="col" colspan="1">Критерий 5</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Задание 1</td>
-        <td>Задание 1</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <td>Задание 2</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@TwBootstrap</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">4</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<form id="form_user_id">
-  <input type="hidden" name="form_id" value="1">
-  <div class="header">
-    <div class="row g-3 align-items-center">
-      <div class="col-auto">
-        <label for="inputPassword6" class="col-form-label">ID пользователя:</label>
-      </div>
-      <div class="col-auto">
-        <input name="user_id" type="number" class="form-control" placeholder="ID пользователя">
-      </div>
-      <div class="col-auto">
-       <p><button type="submit" class="btn btn-primary">Подтвердить</button></p>
-      </div>
-    </div>
+    <h1>Профиль HR-менеджера</h1>
   </div>
-  </form>
-    <b><p>Оцените работу:</p></b>
-  <form id="form_update">
-    <input type="hidden" name="form_id" value="2">
-    <div class="form-row">
-      <div class="col-auto">
-        <input name="crit" type="number" class="form-control" placeholder="Номер критерия">
+    <form id="form_user_id">
+      <input type="hidden" name="form_id" value="1">
+        <div class="header">
+          <div class="row g-3 align-items-center">
+            <div class="col-auto">
+              <label for="inputPassword6" class="col-form-label">ID пользователя:</label>
+            </div>
+            <div class="col-auto">
+              <input name="user_id" type="number" class="form-control" placeholder="ID пользователя">
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary">Подтвердить</button>
+            </div>
+          </div>
+        </div>
+    </form>
+    <div class="header">
+    <form id="form_update">
+      <b><p>Оцените работу:</p></b>
+      <input type="hidden" name="form_id" value="2">
+      <div style="margin-bottom: 15px;">
+        <div class="list-group">
+          <div class="list-group-item">
+            <input class="form-check-input me-1" type="radio" name="listGroupTask" value="" id="firstTask" checked>
+            <label class="form-check-label" for="firstTask">Задание 1</label>
+          </div>
+          <div class="list-group-item">
+            <input class="form-check-input me-1" type="radio" name="listGroupTask" value="" id="secondTask">
+            <label class="form-check-label" for="secondTask">Задание 2</label>
+          </div>
+        </div>
       </div>
-      <div class="col-auto">
-        <p></p><input name="podcrit" type="number" class="form-control" placeholder="Номер подкритерия"></p>
-      </div>
-      <div class="col">
-        <p><input name="grade" type="number" class="form-control" placeholder="Балл"></p>
-      </div>
-      <button type="submit" class="btn btn-primary">Подтвердить</button>
+        <div class="form-row">
+          <div class="col">
+            <p><input name="grade" type="number" class="form-control" placeholder="Балл"></p>
+          </div>
+          <button type="submit" class="btn btn-primary">Подтвердить</button>
+        </div>
+    </form>
     </div>
-  </form>
-  </div>
+  <script src="scripts/hr.js"></script>
 </body>
 </html>
