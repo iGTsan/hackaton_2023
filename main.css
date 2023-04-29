@@ -1,6 +1,7 @@
-.text-block {
+.logo {
     margin-left:10px;
     margin-top:5px;
+    margin-bottom: 15;
 }
 
 .header {
@@ -21,19 +22,26 @@ body {
 
 .headline-text {
     margin-left: 15px;
-    bottom: 200px;
+    margin-left: 15px;
+    padding-bottom: 200px;
 }
 
 h1{
-    font-family: Arial;
+    margin-top: 15;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: bold;
-    margin-bottom: 100px;
+    color: white;
+    left: 200px;
+    bottom: 50px;
+    position: absolute;
 }
 
 .grad {
+    padding-bottom: 200px;
     height: 200px;
     background: url("img/corp-element-desktop.png") right/300px no-repeat,
     linear-gradient(to right, #4495d1, #15256d) center/cover no-repeat;
+    position: relative;
   }
 
 body {
