@@ -14,14 +14,11 @@ module.exports.parse_params = async function(url) {
   }
 }
 
-function proc_id(params) {
-  console.log("Hi");
-}
-
-function proc_input(params) {
+function admin_update_grades(params) {
   try {
     let db_promise = db_funcs.open("database.db");
     db_promise.then((db) => {
+      console.log(params);
       let add_promise = db_funcs.add_grade(db,
          params["user_id"], params["crit"], params["podcrit"], params["grade"]);
       add_promise.then( () => {
@@ -33,9 +30,25 @@ function proc_input(params) {
   }
 }
 
+function hr_update_grades(params) {
+  try {
+    let db_promise = db_funcs.open("database.db");
+    db_promise.then((db) => {
+      let add_promise = db_funcs.add_grade(db,
+         params["user_id"], 4, params["listGroupTask"], params["grade"]);
+      add_promise.then( () => {
+        db_funcs.get_rating(db);
+      })
+    })
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
 const FORMS_ROUTE = {
   // '1' : proc_id,
-  '2' : proc_input
+  '2' : hr_update_grades,
+  '3' : admin_update_grades
 }
 
 module.exports.proc_params = async function(params) {
