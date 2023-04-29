@@ -72,3 +72,9 @@ ul li {
 .table_crit {
     margin-top: 15px;
 }
+
+.table_crit_1 {
+    margin: auto;
+    margin-top: 15px;
+    width: 1000px;
+}
