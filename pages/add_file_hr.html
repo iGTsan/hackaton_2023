@@ -7,14 +7,9 @@
 alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-
 GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="main.css">
-    <title>Профиль</title>
+    <title>Загрузка</title>
 </head>
 <body>
-  <!--<div class="logo">
-  <a href="https://rosatom-academy.ru/">
-    <img src="img/korp.png" class="d-inline-block align-top" alt="" class="d-inline-block align-top" alt=""></a>
-  </div>-->
- 
   <div class="grad">
       <ul>
         <li><a class="navbar-brand" href="profile_hr.html">Главная</a></li>
@@ -22,28 +17,12 @@ GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="a
         <li><a class="navbar-brand" href="table_all.html">Общая таблица</a></li>
         <li><a class="navbar-brand" href="crit.html">Критерии</a></li>
       </ul>
-    <h1>Профиль HR-менеджера</h1>
+    <h1>Загрузка файла</h1>
   </div>
-    <form id="form_user_id">
-        <div class="body">
-          <div class="row g-3 align-items-center">
-            <div class="col-auto">
-              <label for="inputPassword6" class="col-form-label">ID пользователя:</label>
-            </div>
-            <div class="col-auto">
-              <input name="user_id" type="number" class="form-control" placeholder="ID пользователя">
-            </div>
-            <div class="col-auto">
-              <button type="submit" class="btn btn-primary">Подтвердить</button>
-            </div>
-          </div>
-        </div>
-    </form>
-    <div class="body">
+  <div class="body">
     <form id="form_update">
-      <b><p>Оцените работу:</p></b>
-      <p><em>HR-менеджер выставляет баллы по четвертому критерию.</em></p>
-      <input type="hidden" name="form_id" value="2">
+      <p><em>Резервисту требуется загрузить файлы (сертификаты), подтверждающие выполнение всех пяти заданий пятого критерия.</em></p>
+      <input type="hidden" name="form_id" value="5">
       <div style="margin-bottom: 15px;">
         <div class="list-group">
           <div class="list-group-item">
@@ -54,16 +33,26 @@ GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="a
             <input class="form-check-input me-1" type="radio" name="listGroupTask" value="2" id="secondTask">
             <label class="form-check-label" for="secondTask">Задание 2</label>
           </div>
+          <div class="list-group-item">
+            <input class="form-check-input me-1" type="radio" name="listGroupTask" value="3" id="thirdTask">
+            <label class="form-check-label" for="thirdTask">Задание 3</label>
+          </div>
+          <div class="list-group-item">
+            <input class="form-check-input me-1" type="radio" name="listGroupTask" value="4" id="fourthTask">
+            <label class="form-check-label" for="fourthTask">Задание 4</label>
+          </div>
+          <div class="list-group-item">
+            <input class="form-check-input me-1" type="radio" name="listGroupTask" value="5" id="fifthTask">
+            <label class="form-check-label" for="fifthTask">Задание 5</label>
+          </div>
         </div>
       </div>
-        <div class="form-row">
-          <div class="col">
-            <p><input name="grade" type="number" class="form-control" placeholder="Балл"></p>
-          </div>
-          <button type="submit" class="btn btn-primary">Подтвердить</button>
-        </div>
+      <div class="form-file form-file-lg mb-3">
+        <input type="file" name="file_add" class="form-file-input" id="customFileLg">
+        <label class="form-file-label" for="customFileLg">
+        </label>
+        <button type="submit" class="btn btn-primary">Подтвердить</button>
+      </div>
     </form>
     </div>
-  <script src="scripts/hr.js"></script>
 </body>
-</html>
