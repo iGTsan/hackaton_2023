@@ -21,38 +21,45 @@ GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="a
   </div>
   <div class="body">
     <form id="form_update">
-      <p><em>Резервисту требуется загрузить файлы (сертификаты), подтверждающие выполнение всех пяти заданий пятого критерия.</em></p>
+      <p><b>Вы участвовали в событии в качестве спикера?</b></p>
       <input type="hidden" name="form_id" value="5">
       <div style="margin-bottom: 15px;">
         <div class="list-group">
           <div class="list-group-item">
-            <input class="form-check-input me-1" type="radio" name="listGroupTask" value="1" id="firstTask" checked>
-            <label class="form-check-label" for="firstTask">Задание 1</label>
+            <input class="form-check-input me-1" type="radio" name="listGroupAsk1" value="1" id="firstAsk" checked>
+            <label class="form-check-label" for="firstAsk">Да</label>
           </div>
           <div class="list-group-item">
-            <input class="form-check-input me-1" type="radio" name="listGroupTask" value="2" id="secondTask">
-            <label class="form-check-label" for="secondTask">Задание 2</label>
-          </div>
-          <div class="list-group-item">
-            <input class="form-check-input me-1" type="radio" name="listGroupTask" value="3" id="thirdTask">
-            <label class="form-check-label" for="thirdTask">Задание 3</label>
-          </div>
-          <div class="list-group-item">
-            <input class="form-check-input me-1" type="radio" name="listGroupTask" value="4" id="fourthTask">
-            <label class="form-check-label" for="fourthTask">Задание 4</label>
-          </div>
-          <div class="list-group-item">
-            <input class="form-check-input me-1" type="radio" name="listGroupTask" value="5" id="fifthTask">
-            <label class="form-check-label" for="fifthTask">Задание 5</label>
+            <input class="form-check-input me-1" type="radio" name="listGroupAsk1" value="2" id="secondAsk">
+            <label class="form-check-label" for="secondAsk">Нет</label>
           </div>
         </div>
       </div>
-      <div class="form-file form-file-lg mb-3">
-        <input type="file" name="file_add" class="form-file-input" id="customFileLg">
-        <label class="form-file-label" for="customFileLg">
-        </label>
-        <button type="submit" class="btn btn-primary">Подтвердить</button>
+      <p><b>Вы участвовали в этом году?</b></p>
+      <div style="margin-bottom: 15px;">
+        <div class="list-group">
+          <div class="list-group-item">
+            <input class="form-check-input me-1" type="radio" name="listGroupAsk2" value="1" id="firstAsk" checked>
+            <label class="form-check-label" for="firstAsk">Да</label>
+          </div>
+          <div class="list-group-item">
+            <input class="form-check-input me-1" type="radio" name="listGroupAsk2" value="2" id="secondAsk">
+            <label class="form-check-label" for="secondAsk">Нет</label>
+          </div>
+        </div>
       </div>
+      <button type="submit" class="btn btn-primary">Подтвердить</button>
+    </form>
+    <form>
+      <div class="form-file form-file-lg mb-3">
+        <p class="body"><b>Загрузите сертификат:</b></p>
+        <input type="file" name="file_add1" class="form-file-input" id="customFileLg1">
+        <label class="form-file-label" for="customFileLg1"></label>
+        <p class="body"><b>Загрузите программу:</b></p>
+        <input type="file" name="file_add2" class="form-file-input" id="customFileLg2">
+        <label class="form-file-label" for="customFileLg1"></label>
+      </div>
+      <button type="submit" class="btn btn-primary">Подтвердить</button>
     </form>
     </div>
 </body>
