@@ -21,24 +21,7 @@ GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="a
   </ul> -->
 
 <body>
-  <div class="header">
-  <h1 class="headline-title" font-style: italic>Профиль HR</h1>
-  </div>
-  <div class="header">
-    <div class="row g-3 align-items-center">
-      <div class="col-auto">
-        <label for="inputPassword6" class="col-form-label">ID пользователя:</label>
-      </div>
-      <div class="col-auto">
-       <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
-      </div>
-      <div class="col-auto">
-       <button type="submit" class="btn btn-primary">Подтвердить</button>
-      </div>
-    </div>
-  </div>
-<!--
-  <div class="header">
+    <h1 class="headline-title" font-style: italic>Профиль HR</h1>
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -76,21 +59,33 @@ GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="a
     </tbody>
   </table>
 </body>
-</div>
--->
-
-<div class="header">
+<form>
+  <div class="header">
+    <div class="row g-3 align-items-center">
+      <div class="col-auto">
+        <label for="inputPassword6" class="col-form-label">ID пользователя:</label>
+      </div>
+      <div class="col-auto">
+        <input type="number" class="form-control" placeholder="ID пользователя">
+      </div>
+      <div class="col-auto">
+       <p><button type="submit" class="btn btn-primary">Подтвердить</button></p>
+      </div>
+    </div>
+  </form>
+    <b><p>Оцените работу:</p></b>
   <form>
     <div class="form-row">
-      <div class="col">
+      <div class="col-auto">
         <input type="number" class="form-control" placeholder="Номер критерия">
       </div>
-      <div class="col">
-        <input type="number" class="form-control" placeholder="Номер подкритерия">
+      <div class="col-auto">
+        <p></p><input type="number" class="form-control" placeholder="Номер подкритерия"></p>
       </div>
       <div class="col">
-        <input type="number" class="form-control" placeholder="Балл">
+        <p><input type="number" class="form-control" placeholder="Балл"></p>
       </div>
+      <button type="submit" class="btn btn-primary">Подтвердить</button>
     </div>
   </form>
   </div>
