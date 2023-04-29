@@ -21,7 +21,10 @@ GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="a
   </ul> -->
 
 <body>
-    <h1 class="headline-title" font-style: italic>Профиль HR</h1>
+  <div class="grad">
+    <img class="img" src="img/corp-element-desktop.png" width="300" alt="" style="object-position: right"></img>
+    <h1 class="headline-text" font-style: italic>Профиль HR</h1>
+  </div>
   <div class="table_crit">
   <table class="table table-bordered">
     <thead>
@@ -68,7 +71,7 @@ GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="a
         <label for="inputPassword6" class="col-form-label">ID пользователя:</label>
       </div>
       <div class="col-auto">
-        <input type="number" class="form-control" placeholder="ID пользователя">
+        <input name="user_id" type="number" class="form-control" placeholder="ID пользователя">
       </div>
       <div class="col-auto">
        <p><button type="submit" class="btn btn-primary">Подтвердить</button></p>
@@ -79,13 +82,13 @@ GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="a
   <form>
     <div class="form-row">
       <div class="col-auto">
-        <input type="number" class="form-control" placeholder="Номер критерия">
+        <input name="crit" type="number" class="form-control" placeholder="Номер критерия">
       </div>
       <div class="col-auto">
-        <p></p><input type="number" class="form-control" placeholder="Номер подкритерия"></p>
+        <p></p><input name="podcrit" type="number" class="form-control" placeholder="Номер подкритерия"></p>
       </div>
       <div class="col">
-        <p><input type="number" class="form-control" placeholder="Балл"></p>
+        <p><input name="grade" type="number" class="form-control" placeholder="Балл"></p>
       </div>
       <button type="submit" class="btn btn-primary">Подтвердить</button>
     </div>
