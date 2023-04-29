@@ -1,14 +1,34 @@
 .text-block {
-    margin-left:15px;
-    margin-top:15px;
+    margin-left:10px;
+    margin-top:5px;
 }
 
 .header {
-    margin-left:15px;
+    margin: auto;
     margin-top:15px;
+    width: 500px;
+
 }
 
 body {
     display: table-cell;
     vertical-align: middle;
 }
+
+.headline-title {
+    margin-left: 15px;
+}
+
+
+h1{
+    font-family: Arial;
+    font-weight: bold;
+}
+
+body {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
