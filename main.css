@@ -23,21 +23,17 @@ body {
     margin-left: 15px;
 }
 
-.grad {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    height: 200px;
-    background: linear-gradient(to right, #4495d1, #15256d)
-}
-
-.img {
-    object-position: right top;
-}
-
 h1{
     font-family: Arial;
     font-weight: bold;
+    margin-bottom: 100;
 }
+
+.grad {
+    height: 200px;
+    background: url("img/corp-element-desktop.png") right/300px no-repeat,
+    linear-gradient(to right, #4495d1, #15256d) center/cover no-repeat;
+  }
 
 body {
     position: fixed;
