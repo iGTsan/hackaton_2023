@@ -1,0 +1,14 @@
+.text-block {
+    margin-left:15px;
+    margin-top:15px;
+}
+
+.header {
+    margin-left:15px;
+    margin-top:15px;
+}
+
+body {
+    display: table-cell;
+    vertical-align: middle;
+}
