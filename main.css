@@ -7,7 +7,11 @@
     margin: auto;
     margin-top:15px;
     width: 500px;
+}
 
+.table_crit {
+    width: 700px;
+    margin: auto;
 }
 
 body {
@@ -17,6 +21,8 @@ body {
 
 .headline-title {
     margin-left: 15px;
+    height: 200px;
+    background: linear-gradient(to right, #4495d1, #15256d);
 }
 
 
