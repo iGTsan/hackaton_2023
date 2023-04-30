@@ -73,12 +73,6 @@ ul li {
     margin-top: 15px;
 }
 
-.table_crit_1 {
-    margin: auto;
-    margin-top: 15px;
-    width: 1500px;
-}
-
-.scroll {
+.poem {
     overflow: auto;
-}
+  }
