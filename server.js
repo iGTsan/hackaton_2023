@@ -69,6 +69,8 @@ http.createServer(async (request, response) => {
         		response.writeHead(status, {'Content-Type': getMimeType(path)});
         		response.write(text);
         		response.end();
+          }, (err) => {
+            console.log(err.message);
           })
         }
       })
