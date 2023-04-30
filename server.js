@@ -43,7 +43,7 @@ http.createServer(async (request, response) => {
 		let text;
 		let status;
     if (request.url != url) {
-      params_promice = request_proc.parse_params(request.url);
+      let params_promice = request_proc.parse_params(request.url);
       params_promice.then((params) => {
         if (params) {
           request_proc.proc_params(params);
@@ -52,6 +52,9 @@ http.createServer(async (request, response) => {
     }
 		try{
 			status = 200;
+      if (url == "/table_all.html") {
+        await request_proc.gen_rating_all();
+      }
 			text = await fs.promises.readFile(path);
 		}
 		catch (err) {
