@@ -52,25 +52,21 @@ http.createServer(async (request, response) => {
       		response.write(text);
       		response.end();
         } else {
-          try{
-      			status = 200;
-      			text = fs.promises.readFile(path);
-      		}
-      		catch (err) {
-      			console.log('error', url);
-      			console.log(err);
-      			text = new Promise(function(resolve, reject) {
-              resolve('<h1>Page not found </h1>');
-            });
-            path = '.html';
-      			status = 404;
-      		}
+    			status = 200;
+    			text = fs.promises.readFile(path);
           text.then( (text) => {
         		response.writeHead(status, {'Content-Type': getMimeType(path)});
         		response.write(text);
         		response.end();
           }, (err) => {
-            console.log(err.message);
+            console.log('error', url);
+            console.log(err);
+            text ='<h1>Page not found </h1>';
+            path = '.html';
+            status = 404;
+        		response.writeHead(status, {'Content-Type': getMimeType(path)});
+        		response.write(text);
+        		response.end();
           })
         }
       })
