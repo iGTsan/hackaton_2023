@@ -52,9 +52,6 @@ http.createServer(async (request, response) => {
     }
 		try{
 			status = 200;
-      if (url == "/table_all.html") {
-        await request_proc.gen_rating_all();
-      }
 			text = await fs.promises.readFile(path);
 		}
 		catch (err) {

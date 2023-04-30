@@ -1,5 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
-const db_funcs = require("./db");
+const xlsx_parse = require("./xlsx_parse");
 const fs = require("fs");
 
 const TABLE_STRUCT = {
@@ -9,6 +9,7 @@ const TABLE_STRUCT = {
   "criterion_3" : "criterion_3(user_id) VALUES(?)",
   "criterion_4" : "criterion_4(user_id) VALUES(?)",
   "criterion_5" : "criterion_5(user_id) VALUES(?)",
+  "registered_users" : "registered_users(user_id, code) VALUES(?, ?)"
 };
 
 module.exports.insert = async function (db, tablename, values) {
@@ -25,12 +26,25 @@ module.exports.insert = async function (db, tablename, values) {
   });
 }
 
-module.exports.add_user = async function (db, user_id) {
-  db_funcs.insert(db, "users", user_id);
+module.exports.add_user = async function (db_grades, db_users, user_id, code) {
+  module.exports.insert(db_grades, "users", user_id);
   const CRITERION_NUM = 5;
   for (let i = 1; i <= CRITERION_NUM; i++) {
-    db_funcs.insert(db, `criterion_${i}`, user_id);
+    module.exports.insert(db_grades, `criterion_${i}`, user_id);
+  module.exports.insert(db_users, "registered_users", [user_id, code]);
   }
+}
+
+module.exports.add_users = async function (db_grades, db_users, file) {
+  return new Promise(function(resolve, reject) {
+    let users_promise = xlsx_parse.parse_for_users(file);
+    users_promise.then( (users) => {
+      users.forEach((item, i) => {
+        module.exports.add_user(db_grades, db_users, item[0], item[1]);
+      });
+      resolve();
+    })
+  });
 }
 
 
@@ -58,115 +72,44 @@ module.exports.add_grade = async function (db, user_id, criterion, grade_num, gr
   });
 }
 
-module.exports.get_rating = async function (db) {
-  // let ress = [];
-  const sql = `SELECT users.user_id as ID,
-                (criterion_1.grade_1 + criterion_1.grade_2) as GRADE_1,
-                (criterion_2.grade_1 + criterion_2.grade_2) as GRADE_2,
-                (criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4) as GRADE_3,
-                (criterion_4.grade_1 + criterion_4.grade_2) as GRADE_4,
-                (criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) as GRADE_5,
-                (criterion_1.grade_1 + criterion_1.grade_2 +
-                criterion_2.grade_1 + criterion_2.grade_2 +
-                criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4 +
-                criterion_4.grade_1 + criterion_4.grade_2 +
-                criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) as TOTAL_GRADE
-                FROM users
-                INNER JOIN criterion_1
-                ON users.user_id = criterion_1.user_id
-                INNER JOIN criterion_2
-                ON users.user_id = criterion_2.user_id
-                INNER JOIN criterion_3
-                ON users.user_id = criterion_3.user_id
-                INNER JOIN criterion_4
-                ON users.user_id = criterion_4.user_id
-                INNER JOIN criterion_5
-                ON users.user_id = criterion_5.user_id
-                ORDER BY (criterion_1.grade_1 + criterion_1.grade_2 +
-                criterion_2.grade_1 + criterion_2.grade_2 +
-                criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4 +
-                criterion_4.grade_1 + criterion_4.grade_2 +
-                criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5)`;
-  console.log(db);
-  let res = [];
-  let db_promise = db.each(sql, [], (err, rows) => {
-    if (err) {
-      throw err;
-    }
-    // rows.forEach((row) => {
-    //   // console.log(row);
-    //   ress.push(row);
-    // });
-    // console.log(ress);
-    // console.log(rows);
-    res.push(rows);
-    console.log("Row", rows);
-  });
-  console.log("DB promise", db_promise);
-
-    return res;
-
-}
-
-async function rating_generation(rating) {
-  let res = await fs.promises.readFile("pages/table_all_cropped.html");
-  rating.forEach((item, i) => {
-    const row = `<tr>
-            <td>${item["ID"]}</td>
-            <td>${item["GRADE_1"]}</td>
-            <td>${item["GRADE_2"]}</td>
-            <td>${item["GRADE_3"]}</td>
-            <td>${item["GRADE_4"]}</td>
-            <td>${item["GRADE_5"]}</td>
-            <td>${item["TOTAL_GRADE"]}</td>
-            </tr>`
-    res += row;
-  })
-  res += `      </tbody>
-              </table>
-            </div>
-          </body>`;
-  fs.promises.writeFile("pages/table_all.html", res);
-}
-
 module.exports.gen_rating = async function (db) {
-  const sql = `SELECT users.user_id as ID,
-                (criterion_1.grade_1 + criterion_1.grade_2) as GRADE_1,
-                (criterion_2.grade_1 + criterion_2.grade_2) as GRADE_2,
-                (criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4) as GRADE_3,
-                (criterion_4.grade_1 + criterion_4.grade_2) as GRADE_4,
-                (criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) as GRADE_5,
-                (criterion_1.grade_1 + criterion_1.grade_2 +
-                criterion_2.grade_1 + criterion_2.grade_2 +
-                criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4 +
-                criterion_4.grade_1 + criterion_4.grade_2 +
-                criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) as TOTAL_GRADE
-                FROM users
-                INNER JOIN criterion_1
-                ON users.user_id = criterion_1.user_id
-                INNER JOIN criterion_2
-                ON users.user_id = criterion_2.user_id
-                INNER JOIN criterion_3
-                ON users.user_id = criterion_3.user_id
-                INNER JOIN criterion_4
-                ON users.user_id = criterion_4.user_id
-                INNER JOIN criterion_5
-                ON users.user_id = criterion_5.user_id
-                ORDER BY (criterion_1.grade_1 + criterion_1.grade_2 +
-                criterion_2.grade_1 + criterion_2.grade_2 +
-                criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4 +
-                criterion_4.grade_1 + criterion_4.grade_2 +
-                criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) DESC`;
-  console.log(db);
-  let res = [];
-  let db_promise = db.all(sql, [], (err, rows) => {
-    if (err) {
-      throw err;
-    }
-    rating_generation(rows);
-  });
-  console.log("DB promise", db_promise);
+  return new Promise(function(resolve, reject) {
+    const sql = `SELECT users.user_id as ID,
+                  (criterion_1.grade_1 + criterion_1.grade_2) as GRADE_1,
+                  (criterion_2.grade_1 + criterion_2.grade_2) as GRADE_2,
+                  (criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4) as GRADE_3,
+                  (criterion_4.grade_1 + criterion_4.grade_2) as GRADE_4,
+                  (criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) as GRADE_5,
+                  (criterion_1.grade_1 + criterion_1.grade_2 +
+                  criterion_2.grade_1 + criterion_2.grade_2 +
+                  criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4 +
+                  criterion_4.grade_1 + criterion_4.grade_2 +
+                  criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) as TOTAL_GRADE
+                  FROM users
+                  INNER JOIN criterion_1
+                  ON users.user_id = criterion_1.user_id
+                  INNER JOIN criterion_2
+                  ON users.user_id = criterion_2.user_id
+                  INNER JOIN criterion_3
+                  ON users.user_id = criterion_3.user_id
+                  INNER JOIN criterion_4
+                  ON users.user_id = criterion_4.user_id
+                  INNER JOIN criterion_5
+                  ON users.user_id = criterion_5.user_id
+                  ORDER BY (criterion_1.grade_1 + criterion_1.grade_2 +
+                  criterion_2.grade_1 + criterion_2.grade_2 +
+                  criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4 +
+                  criterion_4.grade_1 + criterion_4.grade_2 +
+                  criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) DESC`;
+    console.log(db);
+    let res = [];
+    let db_promise = db.all(sql, [], (err, rows) => {
+      if (err) {
+        throw err;
+      }
+      resolve(rows);
+    });
 
-    return res;
+  });
 
 }
