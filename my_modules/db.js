@@ -47,16 +47,17 @@ module.exports.add_users = async function (db_grades, db_users, file) {
   });
 }
 
-
 module.exports.open = async function (filename) {
-  let db = new sqlite3.Database(`./db/${filename}`, (err) => {
-    if (err) {
-      return console.error(err.message);
-    }
-    console.log('Connected to the SQlite database.');
+  return new Promise(function(resolve, reject) {
+    let db = new sqlite3.Database(`./db/${filename}`, (err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Connected to the SQlite database.');
+      resolve(db);
+    });
+    console.log("DB returned");
   });
-  console.log("DB returned");
-   return db;
 }
 
 module.exports.add_grade = async function (db, user_id, criterion, grade_num, grade) {
@@ -102,8 +103,7 @@ module.exports.gen_rating = async function (db) {
                   criterion_4.grade_1 + criterion_4.grade_2 +
                   criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) DESC`;
     console.log(db);
-    let res = [];
-    let db_promise = db.all(sql, [], (err, rows) => {
+    db.all(sql, [], (err, rows) => {
       if (err) {
         throw err;
       }
@@ -112,4 +112,40 @@ module.exports.gen_rating = async function (db) {
 
   });
 
+}
+
+module.exports.gen_user_rating = async function(db, user_id) {
+  return new Promise(function(resolve, reject) {
+    const sql = `SELECT users.user_id as ID,
+                  criterion_1.grade_1 as d1, criterion_1.grade_2 as d2,
+                  criterion_2.grade_1 as d3, criterion_2.grade_2 as d4,
+                  criterion_3.grade_1 as d5, criterion_3.grade_2 as d6, criterion_3.grade_3 as d7, criterion_3.grade_4 as d8,
+                  criterion_4.grade_1 as d9, criterion_4.grade_2 as d10,
+                  criterion_5.grade_1 as d11, criterion_5.grade_2 as d12, criterion_5.grade_3 as d13, criterion_5.grade_4 as d14, criterion_5.grade_5 as d15,
+                  (criterion_1.grade_1 + criterion_1.grade_2 +
+                  criterion_2.grade_1 + criterion_2.grade_2 +
+                  criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4 +
+                  criterion_4.grade_1 + criterion_4.grade_2 +
+                  criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) as d16
+                  FROM users
+                  INNER JOIN criterion_1
+                  ON users.user_id = criterion_1.user_id
+                  INNER JOIN criterion_2
+                  ON users.user_id = criterion_2.user_id
+                  INNER JOIN criterion_3
+                  ON users.user_id = criterion_3.user_id
+                  INNER JOIN criterion_4
+                  ON users.user_id = criterion_4.user_id
+                  INNER JOIN criterion_5
+                  ON users.user_id = criterion_5.user_id
+                  WHERE users.user_id = ${user_id}`;
+    console.log(db);
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        throw err;
+      }
+      resolve(rows);
+    });
+
+  });
 }
