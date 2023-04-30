@@ -22,7 +22,6 @@ GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="a
   <div class="body">
     <form id="form_update">
       <p><b>Вы участвовали в событии в качестве спикера?</b></p>
-      <input type="hidden" name="form_id" value="5">
       <div style="margin-bottom: 15px;">
         <div class="list-group">
           <div class="list-group-item">
@@ -51,16 +50,20 @@ GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="a
       <button type="submit" class="btn btn-primary">Подтвердить</button>
     </form>
     <p class="hidden" id="no_all_true"><b>К сожалению, чтобы добавить файл нужно участвовать в этом году и быть на мероприятии в качестве спикера.</b></p>
-    <form class="hidden" id="form_add_file">
+    <form id="form_add_file">
+      <input type="hidden" name="form_id" value="5">
       <div class="form-file form-file-lg mb-3">
         <p class="body"><b>Загрузите сертификат:</b></p>
-        <input type="file" name="file_add1" class="form-file-input" id="customFileLg1">
+        <input enctype="multipart/form-data" type="file" name="file_add1" class="form-file-input" id="customFileLg1">
         <label class="form-file-label" for="customFileLg1"></label>
+        <div class="ajax-reply"></div>
         <p class="body"><b>Загрузите программу:</b></p>
-        <input type="file" name="file_add2" class="form-file-input" id="customFileLg2">
+        <input enctype="multipart/form-data" type="file" name="file_add2" class="form-file-input" id="customFileLg2">
         <label class="form-file-label" for="customFileLg1"></label>
+        <div class="ajax-reply"></div>
       </div>
       <button type="submit" class="btn btn-primary">Подтвердить</button>
     </form>
     </div>
+    <script src="fileprocess.js"></script>
 </body>
