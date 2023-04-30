@@ -23,7 +23,20 @@ GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="a
     <form id="form_update">
       <p><em>HR-менеджер направляет подтверждающие файлы для всех четырех заданий третьего критерия.</em></p>
       <input type="hidden" name="form_id" value="4">
-      <div style="margin-bottom: 15px;">
+        <div class="body">
+          <div class="row g-3 align-items-center">
+            <div class="col-auto">
+              <label for="inputPassword6" class="col-form-label">ID пользователя:</label>
+            </div>
+            <div class="col-auto">
+              <input name="user_id" type="number" class="form-control" placeholder="ID пользователя">
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary">Подтвердить</button><br>
+            </div>
+          </div>
+        </div>
+      <div style="margin-bottom: 15px; margin-top: 15px;">
         <div class="list-group">
           <div class="list-group-item">
             <input class="form-check-input me-1" type="radio" name="listGroupTask" value="1" id="firstTask" checked>
