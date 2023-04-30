@@ -3,10 +3,6 @@ const fs = require("fs");
 const db_funcs = require("./my_modules/db");
 const request_proc = require("./my_modules/request_proc");
 
-
-const routes = {
-"/" : "/index.html",
-};
 const rootPages = "./pages"
 
 function getMimeType(path) {
@@ -30,7 +26,7 @@ function getMimeType(path) {
 	if (ext) {
 		return mimes[ext];
 	} else {
-		return 'text/plain';
+		return 'text/html';
 	}
 }
 
@@ -39,30 +35,43 @@ http.createServer(async (request, response) => {
   const urlRegExp = /^[^?]+/;
   const url = request.url.match(urlRegExp)[0];
 	if (url != '/favicon.ico') {
-		let path = (url in routes) ? rootPages+routes[url] : rootPages+url;
+		let path = rootPages+url;
 		let text;
 		let status;
-    if (request.url != url) {
-      let params_promice = request_proc.parse_params(request.url);
-      params_promice.then((params) => {
-        if (params) {
-          request_proc.proc_params(params);
+    let proc_result = null;
+    let params_promice = request_proc.parse_params(request.url);
+    params_promice.then((params) => {
+      if (params) {
+        proc_result = request_proc.proc_params(params);
+      }
+      proc_result.then( (result) => {
+        if (result) {
+          text = result;
+          status = 200;
+      		response.writeHead(status, {'Content-Type': getMimeType(path)});
+      		response.write(text);
+      		response.end();
+        } else {
+          try{
+      			status = 200;
+      			text = fs.promises.readFile(path);
+      		}
+      		catch (err) {
+      			console.log('error', url);
+      			console.log(err);
+      			text = new Promise(function(resolve, reject) {
+              resolve('<h1>Page not found </h1>');
+            });
+            path = '.html';
+      			status = 404;
+      		}
+          text.then( (text) => {
+        		response.writeHead(status, {'Content-Type': getMimeType(path)});
+        		response.write(text);
+        		response.end();
+          })
         }
       })
-    }
-		try{
-			status = 200;
-			text = await fs.promises.readFile(path);
-		}
-		catch (err) {
-			console.log('error', url);
-			console.log(err);
-			text = '<h1>Page not found </h1>';
-      path = '.html';
-			status = 404;
-		}
-		response.writeHead(status, {'Content-Type': getMimeType(path)});
-		response.write(text);
-		response.end();
+    })
 	}
 }).listen(3000);

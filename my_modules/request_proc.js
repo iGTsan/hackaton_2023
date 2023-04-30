@@ -32,6 +32,7 @@ function admin_update_grades(params) {
   } catch (err) {
     console.log(err.message);
   }
+  return null;
 }
 
 function hr_update_grades(params) {
@@ -43,15 +44,19 @@ function hr_update_grades(params) {
       add_promise.then( () => {
         // db_funcs.get_rating(db);
       })
+      db.close();
     })
   } catch (err) {
     console.log(err.message);
   }
+  return null;
 }
 
-function hr_upload_file(params) {
+function hr_file_upload(params) {
+  console.log(params);
   if (params["file_add_hr"]) {
     try {
+      console.log();
       let db_promise = db_funcs.open("database.db");
       db_promise.then((db) => {
         let add_promise = db_funcs.add_grade(db,
@@ -64,7 +69,7 @@ function hr_upload_file(params) {
       console.log(err.message);
     }
   }
-
+  return null;
 }
 
 function user_file_upload(params) {
@@ -82,17 +87,80 @@ function user_file_upload(params) {
       console.log(err.message);
     }
   }
+  return null;
+}
+
+function check(db, params) {
+  return new Promise(function(resolve, reject) {
+    const id = params["user_id"];
+    const code = params["code"];
+    const sql = `SELECT *
+                FROM registered_users
+                WHERE user_id = ${id} AND code = '${code}'`;
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        throw err;
+      }
+      if (rows.length) {
+        resolve(1);
+      } else {
+        reject(0);
+      }
+    });
+  });
+}
+
+async function generate_bad_login() {
+  console.log("Bad login");
+  text = await fs.promises.readFile("./pages/profile_error.html");
+  return text;
+}
+
+async function generate_good_login(params) {
+  console.log("Good login");
+  text = await fs.promises.readFile("./pages/profile_user_cropped.html");
+  return new Promise(function(resolve, reject) {
+    let db_promise = db_funcs.open("database.db");
+    db_promise.then((db) => {
+      let rating_promise = db_funcs.gen_user_rating(db, params["user_id"])
+      rating_promise.then((rating) => {
+        rating = rating[0];
+        console.log(rating);
+        for (let i = 1; i <= 16; i++) {
+          text += `
+          <td>${rating[`d${i}`]}</td>`;
+        }
+        text += `
+         </tr>
+        </tbody>
+       </table>
+     </div>
+      <p class="hidden" id="user_id">${params["user_id"]}</p>
+      <script src="scripts/user_id.js"></script>`
+        resolve(text);
+      })
+    })
+  });
 }
 
 function user_login(params) {
-  new Promise(function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
     try {
-      let db_promise = db_funcs.open("database.db");
+      let db_promise = db_funcs.open("users.db");
       db_promise.then((db) => {
-        let add_promise = db_funcs.add_grade(db,
-           params["user_id"], 5, 1, GRADE_FOR_USER_UPLOAD_5TH_CRIT);
-        add_promise.then( () => {
+        let check_promise = check(db, params)
+        console.log("Start checking");
+        check_promise.then( (val) => {
+          console.log("Checked");
+          generate_good_login_promise = generate_good_login(params);
+          generate_good_login_promise.then((text) => {
+            resolve(text);
+            db.close();
+          })
           // db_funcs.get_rating(db);
+        }, (err) => {
+          resolve(generate_bad_login());
+          db.close();
         })
       })
     } catch (err) {
@@ -130,13 +198,14 @@ async function update_rating(params) {
   } catch (err) {
     console.log(err.message);
   }
+  return null;
 }
 
 const FORMS_ROUTE = {
   // '1' : proc_id,
   '2' : hr_update_grades,
   '3' : admin_update_grades,
-  '4' : user_file_upload,
+  '4' : hr_file_upload,
   '5' : user_file_upload,
   '6' : update_rating,
   'login' : user_login
@@ -145,5 +214,6 @@ const FORMS_ROUTE = {
 module.exports.proc_params = async function(params) {
   form_id = 'form_id';
   if (params[form_id] in FORMS_ROUTE)
-    FORMS_ROUTE[params[form_id]](params);
+    return FORMS_ROUTE[params[form_id]](params);
+  return null;
 }
