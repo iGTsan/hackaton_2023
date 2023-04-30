@@ -1,7 +1,7 @@
 function on_user_id_submit(event) {
   event.preventDefault();
   let form_user_id = document.querySelector("#form_user_id");
-  const user_id = document.querySelectorAll("#form_user_id input")[1];
+  const user_id = document.querySelectorAll("#form_user_id input")[0];
   form_user_id.classList.add('hidden');
   form_update.classList.remove('hidden');
   // <input type="hidden" name="form_id" value="2">
