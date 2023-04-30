@@ -78,3 +78,7 @@ ul li {
     margin-top: 15px;
     width: 1500px;
 }
+
+.scroll {
+    overflow: auto;
+}
