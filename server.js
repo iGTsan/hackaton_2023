@@ -1,5 +1,6 @@
 const http = require("http");
 const fs = require("fs");
+const formidable = require('formidable');
 const db_funcs = require("./my_modules/db");
 const request_proc = require("./my_modules/request_proc");
 
@@ -30,11 +31,35 @@ function getMimeType(path) {
 	}
 }
 
-http.createServer(async (request, response) => {
+const server = http.createServer();
+
+function process_post(request, response) {
+	const form = formidable({ multiples: true, uploadDir : "./uploads", allowEmptyFiles : false });
+
+	form.parse(request, (err, fields, files) => {
+		if (err) {
+			response.writeHead(err.httpCode || 400, { 'Content-Type': 'text/plain' });
+			response.end(String(err));
+			return;
+
+		}
+		// console.log(fields);
+		// console.log(files);
+	});
+
+	return;
+}
+
+
+server.on('request', async (request, response) => {
 	// console.log(request.url);
   const urlRegExp = /^[^?]+/;
   const url = request.url.match(urlRegExp)[0];
-	if (url != '/favicon.ico') {
+
+	if (request.method == "POST") {
+		// request.setTimeout(2000, process_post);
+		process_post(request, response);
+	} if (url != '/favicon.ico') {
 		let path = rootPages+url;
 		let text;
 		let status;
@@ -72,4 +97,6 @@ http.createServer(async (request, response) => {
       })
     })
 	}
-}).listen(3000);
+})
+
+server.listen(3000);
