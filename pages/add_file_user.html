@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-
+alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-
+GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <title>Загрузка</title>
+</head>
+<body>
+  <div class="grad">
+      <ul>
+        <li><a class="navbar-brand" href="profile_user.html">Главная</a></li>
+        <li><a class="navbar-brand" href="add_file_user.html">Загрузка</a></li>
+        <li><a class="navbar-brand" href="table_all.html">Общая таблица</a></li>
+        <li><a class="navbar-brand" href="crit.html">Критерии</a></li>
+      </ul>
+    <h1>Загрузка файла</h1>
+  </div>
+  <div class="body">
+    <form id="form_update">
+      <p><b>Вы участвовали в событии в качестве спикера?</b></p>
+      <div style="margin-bottom: 15px;">
+        <div class="list-group">
+          <div class="list-group-item">
+            <input class="form-check-input me-1" type="radio" name="listGroupAsk1" value="1" id="firstAsk" checked>
+            <label class="form-check-label" for="firstAsk">Да</label>
+          </div>
+          <div class="list-group-item">
+            <input class="form-check-input me-1" type="radio" name="listGroupAsk1" value="2" id="secondAsk">
+            <label class="form-check-label" for="secondAsk">Не т</label>
+          </div>
+        </div>
+      </div>
+      <p><b>Вы участвовали в этом году?</b></p>
+      <div style="margin-bottom: 15px;">
+        <div class="list-group">
+          <div class="list-group-item">
+            <input class="form-check-input me-1" type="radio" name="listGroupAsk2" value="1" id="firstAsk" checked>
+            <label class="form-check-label" for="firstAsk">Да</label>
+          </div>
+          <div class="list-group-item">
+            <input class="form-check-input me-1" type="radio" name="listGroupAsk2" value="2" id="secondAsk">
+            <label class="form-check-label" for="secondAsk">Нет</label>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Подтвердить</button>
+    </form>
+    <p class="hidden" id="no_all_true"><b>К сожалению, чтобы добавить файл нужно участвовать в этом году и быть на мероприятии в качестве спикера.</b></p>
+    <form id="form_add_file" class="hidden">
+      <input type="hidden" name="form_id" value="5">
+      <div class="form-file form-file-lg mb-3">
+        <p class="body"><b>Загрузите сертификат:</b></p>
+        <input enctype="multipart/form-data" type="file" name="file_add1" class="form-file-input" id="customFileLg1">
+        <label class="form-file-label" for="customFileLg1"></label>
+        <div class="ajax-reply"></div>
+        <p class="body"><b>Загрузите программу:</b></p>
+        <input enctype="multipart/form-data" type="file" name="file_add2" class="form-file-input" id="customFileLg2">
+        <label class="form-file-label" for="customFileLg1"></label>
+        <div class="ajax-reply"></div>
+      </div>
+      <button type="submit" class="btn btn-primary">Подтвердить</button>
+    </form>
+    </div>
+    <script src="./scripts/add_file_user.js"></script>
+</body>
