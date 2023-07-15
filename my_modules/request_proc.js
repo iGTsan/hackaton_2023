@@ -201,6 +201,27 @@ async function update_rating(params) {
   return null;
 }
 
+function get_table(params) {
+  return new Promise(function(resolve, reject) {
+    try {
+      let db_promise = db_funcs.open("database.db");
+      db_promise.then((db) => {
+        let rating_promise = db_funcs.gen_rating(db);
+        rating_promise.then((rating) => {
+          let res = "";
+          rating.forEach((item, i) => {
+            const row = `${item["ID"]} ${item["GRADE_1"]} ${item["GRADE_2"]} ${item["GRADE_3"]} ${item["GRADE_4"]} ${item["GRADE_5"]} ${item["TOTAL_GRADE"]}\n`
+            res += row;
+          })
+          resolve(res);
+        })
+      })
+    } catch (err) {
+      console.log(err.message);
+    }
+  })
+}
+
 const FORMS_ROUTE = {
   // '1' : proc_id,
   '2' : hr_update_grades,
@@ -208,7 +229,8 @@ const FORMS_ROUTE = {
   '4' : hr_file_upload,
   '5' : user_file_upload,
   '6' : update_rating,
-  'login' : user_login
+  'login' : user_login,
+  'get_table' : get_table
 }
 
 module.exports.proc_params = async function(params) {

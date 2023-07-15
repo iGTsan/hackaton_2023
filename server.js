@@ -34,7 +34,7 @@ function getMimeType(path) {
 const server = http.createServer();
 
 function process_post(request, response) {
-	const form = formidable({ multiples: true, uploadDir : "./uploads", allowEmptyFiles : false });
+	const form = formidable({ multiples: true, uploadDir : "./uploads"});
 
 	form.parse(request, (err, fields, files) => {
 		if (err) {
