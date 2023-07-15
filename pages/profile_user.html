@@ -173,7 +173,6 @@
               <div class="project-box-content-header">
                 <p class="box-content-header">5 критерий</p>
                 <p class="box-content-subheader">Прикрепите подтвеждающие файлы:</p>
-
               </div>
               <div class="box-progress-wrapper">
                 <p class="box-progress-header">Баллы:</p>
@@ -182,10 +181,13 @@
                 </div>
                 <p class="box-progress-percentage" id="crit_5">5/10</p>
               </div>
-              <div class="project-box-content-header">
-                <input type="file" placeholder="Выберите файл" id="file_input_person">
-                <input type="submit" value="Отправить">
-              </div>
+              <form id="form_add_file" class="hidden" method="post" enctype="multipart/form-data">
+                <div class="project-box-content-header">
+                  <input type="file" placeholder="Загрузите сертификат" name="file_add1" class="form-file-input" id="customFileLg1">
+                  <input type="file" placeholder="Загрузите программу" name="file_add2" class="form-file-input" id="customFileLg2">  
+                  <input type="submit" value="Отправить">
+                </div>
+              </form>
             </div>
           </div>
         </div>
