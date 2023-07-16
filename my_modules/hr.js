@@ -11,7 +11,7 @@ function on_user_id_submit(event) {
   input_user_id.value = user_id.value;
   form_update.appendChild(input_user_id);
 }
-
+ 
 let user_id_submit = document.querySelector("#form_user_id button");
 user_id_submit.addEventListener("click", on_user_id_submit);
 let form_update = document.querySelector("#form_update");
