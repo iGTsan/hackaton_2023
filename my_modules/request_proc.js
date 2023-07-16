@@ -97,28 +97,33 @@ function check(db, params) {
     const sql = `SELECT *
                 FROM registered_users
                 WHERE user_id = ${id} AND code = '${code}'`;
-    db.all(sql, [], (err, rows) => {
-      if (err) {
-        throw err;
-      }
-      if (rows.length) {
-        resolve(1);
-      } else {
-        reject(0);
-      }
-    });
+    try {
+      db.all(sql, [], (err, rows) => {
+        if (err) {
+          throw err;
+        }
+        if (rows.length) {
+          resolve(1);
+        } else {
+          reject(0);
+        }
+      });
+    } catch {
+      reject(0);
+    }
   });
 }
 
 async function generate_bad_login() {
   console.log("Bad login");
-  text = await fs.promises.readFile("./pages/profile_error.html");
+  // text = await fs.promises.readFile("./pages/profile_error.html");
+  text = "No such user";
   return text;
 }
 
 async function generate_good_login(params) {
   console.log("Good login");
-  text = await fs.promises.readFile("./pages/profile_user_cropped.html");
+  text = "";
   return new Promise(function(resolve, reject) {
     let db_promise = db_funcs.open("database.db");
     db_promise.then((db) => {
@@ -127,16 +132,9 @@ async function generate_good_login(params) {
         rating = rating[0];
         console.log(rating);
         for (let i = 1; i <= 16; i++) {
-          text += `
-          <td>${rating[`d${i}`]}</td>`;
+          text += `${rating[`d${i}`]} `;
         }
-        text += `
-         </tr>
-        </tbody>
-       </table>
-     </div>
-      <p class="hidden" id="user_id">${params["user_id"]}</p>
-      <script src="scripts/user_id.js"></script>`
+        text += `\n${params["user_id"]} ${params["code"]}`;
         resolve(text);
       })
     })
@@ -222,6 +220,32 @@ function get_table(params) {
   })
 }
 
+function get_user_info(params) {
+  return new Promise(function(resolve, reject) {
+    try {
+      let db_promise = db_funcs.open("users.db");
+      db_promise.then((db) => {
+        let check_promise = check(db, params)
+        console.log("Start checking");
+        check_promise.then( (val) => {
+          console.log("Checked");
+          generate_good_login_promise = generate_good_login(params);
+          generate_good_login_promise.then((text) => {
+            resolve(text);
+            db.close();
+          })
+          // db_funcs.get_rating(db);
+        }, (err) => {
+          resolve(generate_bad_login());
+          db.close();
+        })
+      })
+    } catch (err) {
+      console.log(err.message);
+    }
+  });
+}
+
 const FORMS_ROUTE = {
   // '1' : proc_id,
   '2' : hr_update_grades,
@@ -230,7 +254,8 @@ const FORMS_ROUTE = {
   '5' : user_file_upload,
   '6' : update_rating,
   'login' : user_login,
-  'get_table' : get_table
+  'get_table' : get_table,
+  'get_user_info' : get_user_info
 }
 
 module.exports.proc_params = async function(params) {
