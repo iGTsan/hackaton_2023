@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const xlsx_parse = require("./xlsx_parse");
 const fs = require("fs");
- 
+
 const TABLE_STRUCT = {
   "users" : "users(user_id) VALUES(?)",
   "criterion_1" : "criterion_1(user_id) VALUES(?)",
