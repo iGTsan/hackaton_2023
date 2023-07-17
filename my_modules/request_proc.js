@@ -18,11 +18,11 @@ module.exports.parse_params = async function(url) {
   }
 }
 
-function admin_update_grades(params) {
+function update_grades(params) {
   try {
     let db_promise = db_funcs.open("database.db");
     db_promise.then((db) => {
-      // console.log(params);
+      console.log("UPDATE GRADES", params);
       let add_promise = db_funcs.add_grade(db,
          params["user_id"], params["crit"], params["podcrit"], params["grade"]);
       add_promise.then( () => {
@@ -35,59 +35,28 @@ function admin_update_grades(params) {
   return null;
 }
 
+function admin_update_grades(params) {
+  return update_grades(params);
+}
+
 function hr_update_grades(params) {
-  try {
-    let db_promise = db_funcs.open("database.db");
-    db_promise.then((db) => {
-      let add_promise = db_funcs.add_grade(db,
-         params["user_id"], 4, params["listGroupTask"], params["grade"]);
-      add_promise.then( () => {
-        // db_funcs.get_rating(db);
-      })
-      db.close();
-    })
-  } catch (err) {
-    console.log(err.message);
-  }
-  return null;
+  params["crit"] = 4;
+  params["podcrit"] = params["listGroupTask"];
+  return update_grades(params);
 }
 
 function hr_file_upload(params) {
-  console.log(params);
-  if (params["file_add_hr"]) {
-    try {
-      console.log();
-      let db_promise = db_funcs.open("database.db");
-      db_promise.then((db) => {
-        let add_promise = db_funcs.add_grade(db,
-           params["user_id"], 3, params["listGroupTask"], GRADE_FOR_HR_UPLOAD_3RD_CRIT);
-        add_promise.then( () => {
-          // db_funcs.get_rating(db);
-        })
-      })
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
-  return null;
+  params["crit"] = 3;
+  params["podcrit"] = params["listGroupTask"];
+  params["grade"] = GRADE_FOR_HR_UPLOAD_3RD_CRIT;
+  return update_grades(params);
 }
 
 function user_file_upload(params) {
-  if (params["file_add1"] && params["file_add2"]) {
-    try {
-      let db_promise = db_funcs.open("database.db");
-      db_promise.then((db) => {
-        let add_promise = db_funcs.add_grade(db,
-           params["user_id"], 5, 1, GRADE_FOR_USER_UPLOAD_5TH_CRIT);
-        add_promise.then( () => {
-          // db_funcs.get_rating(db);
-        })
-      })
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
-  return null;
+  params["crit"] = 5;
+  params["podcrit"] = 1;
+  params["grade"] = GRADE_FOR_USER_UPLOAD_5TH_CRIT;
+  return update_grades(params);
 }
 
 function check(db, params) {
@@ -255,7 +224,8 @@ const FORMS_ROUTE = {
   '6' : update_rating,
   'login' : user_login,
   'get_table' : get_table,
-  'get_user_info' : get_user_info
+  'get_user_info' : get_user_info,
+  'crit_5' : user_file_upload
 }
 
 module.exports.proc_params = async function(params) {
