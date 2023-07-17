@@ -34,7 +34,6 @@ function createRow(i, row_data) {
 function fillTable(data) {
   data = parse(data);
   data.forEach((item, i) => {
-    // console.log(item);
     let row = createRow(i + 1, item);
     tbody.append(row);
   });

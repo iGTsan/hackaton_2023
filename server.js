@@ -35,7 +35,7 @@ const server = http.createServer();
 
 function process_post(request, response) {
 	const form = formidable({ multiples: true, uploadDir : "./uploads"});
-
+	// console.log(request);
 	form.parse(request, (err, fields, files) => {
 		if (err) {
 			response.writeHead(err.httpCode || 400, { 'Content-Type': 'text/plain' });
@@ -43,8 +43,16 @@ function process_post(request, response) {
 			return;
 
 		}
-		// console.log(fields);
 		// console.log(files);
+		// console.log(fields);
+		let cnt = 0
+		for (const key of Object.keys(files)) {
+	    cnt++;
+		}
+		if (cnt == 2) {
+			console.log(fields);
+			request_proc.proc_params(fields);
+		}
 	});
 
 	return;
