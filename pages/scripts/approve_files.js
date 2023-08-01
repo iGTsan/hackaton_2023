@@ -1,0 +1,1 @@
+list = document.getElementById("list");

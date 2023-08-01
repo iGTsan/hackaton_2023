@@ -91,20 +91,20 @@
                 </a>
             </div>
             <div class="projects-section">
-                <div class="body">
+                <div class="body" id="body">
                     <form id="form_update">
                         <b>
                             <p>Прикрепленные файлы:</p>
                         </b>
                         <p><em>HR-менеджер выставляет баллы за прикрепленные пользователем файлы.</em></p>
                         <input type="hidden" name="form_id" value="2">
-                        <div style="margin-bottom: 15px;">
-                            <div style="margin-bottom: 15px;">
+                        <div id="list" style="margin-bottom: 15px;">
+                            <div class="file_approve" style="margin-bottom: 15px;">
                                 <a href="http://example.com/kolbasa-primer.xlsx" download style="margin-right: 20px;">1 файл</a>
                                 <button type="button" class="btn btn-success">Ок</button>
                                 <button type="button" class="btn btn-secondary">Не ок</button>
                             </div>
-                            <div style="margin-bottom: 15px;">
+                            <div class="file_approve" style="margin-bottom: 15px;">
                                 <a href="http://example.com/kolbasa-primer.xlsx" download style="margin-right: 20px;">2 файл</a>
                                 <button type="button" class="btn btn-success">Ок</button>
                                 <button type="button" class="btn btn-secondary">Не ок</button>
@@ -113,6 +113,7 @@
                     </form>
                 </div>
             </div>
+            <script src="./scripts/approve_files.js"></script>
 </body>
 
 </html>
