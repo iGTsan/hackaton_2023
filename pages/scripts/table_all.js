@@ -19,6 +19,7 @@ function parse(data) {
 }
 
 function createRow(i, row_data) {
+  console.log(row_data);
   let row = document.createElement("tr");
   let num = document.createElement("th");
   num.innerHTML = i;
@@ -28,13 +29,13 @@ function createRow(i, row_data) {
     cell.innerHTML = item;
     row.append(cell);
   });
-  return row;
+  tbody.append(row);
 }
 
 function fillTable(data) {
   data = parse(data);
   data.forEach((item, i) => {
-    let row = createRow(i + 1, item);
-    tbody.append(row);
+    if (item.length == 7)
+      createRow(i + 1, item);
   });
 }
