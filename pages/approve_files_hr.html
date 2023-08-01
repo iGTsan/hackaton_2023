@@ -91,53 +91,36 @@
                 </a>
             </div>
             <div class="projects-section">
-                <div class="project-box-content-header">
-                </div>
-                <form id="form_user_id">
-                    <div class="body">
-                        <div class="row g-3 align-items-center">
-                            <div class="col-auto">
-                                <label for="inputPassword6" class="col-form-label">ID пользователя:</label>
-                            </div>
-                            <div class="col-auto">
-                                <input name="user_id" type="number" class="form-control" placeholder="ID пользователя">
-                            </div>
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-primary">Подтвердить</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
                 <div class="body">
                     <form id="form_update">
                         <b>
-                            <p>Оцените работу:</p>
+                            <p>Прикрепленные файлы:</p>
                         </b>
-                        <p><em>HR-менеджер выставляет баллы по четвертому критерию.</em></p>
+                        <p><em>HR-менеджер выставляет баллы за прикрепленные пользователем файлы.</em></p>
                         <input type="hidden" name="form_id" value="2">
                         <div style="margin-bottom: 15px;">
                             <div class="list-group">
-                                <div class="list-group-item">
-                                    <input class="form-check-input me-1" type="radio" name="listGroupTask" value="1"
-                                        id="firstTask" checked>
-                                    <label class="form-check-label" for="firstTask">Задание 1</label>
+                                <a href="http://example.com/kolbasa-primer.xlsx" download>1 файл</a>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Подтвердить файл
+                                    </label>
                                 </div>
-                                <div class="list-group-item">
-                                    <input class="form-check-input me-1" type="radio" name="listGroupTask" value="2"
-                                        id="secondTask">
-                                    <label class="form-check-label" for="secondTask">Задание 2</label>
+                                <a href="http://example.com/kolbasa-primer.xlsx" download>2 файл</a>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Подтвердить файл
+                                    </label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col">
-                                <p><input name="grade" type="number" class="form-control" placeholder="Балл"></p>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Подтвердить</button>
+                            <button type="submit" class="btn btn-primary">Начислить баллы</button>
                         </div>
                     </form>
                 </div>
-                <script src="./scripts/hr.js"></script>
             </div>
 </body>
 
