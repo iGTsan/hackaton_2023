@@ -243,9 +243,27 @@ function get_files(params) {
 
 function get_file(params) {
   return new Promise(function(resolve, reject) {
+    const filePath = "./uploads/" + params['filename'];
+    // console.log(filePath);
     try {
-      resolve(text);
+
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        resolve('Файл не найден.');
+      }
+
+      // Читаем файл целиком в буфер
+      fs.readFile(filePath, (err, data) => {
+        if (err) {
+          console.error('Ошибка при чтении файла:', err);
+          resolve('Произошла ошибка при скачивании файла.');
+        } else {
+          resolve(data);
+        }
+      });
+    });
     } catch (err) {
+      console.log("GetFile error");
       console.log(err.message);
     }
   });

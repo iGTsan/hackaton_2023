@@ -35,7 +35,7 @@ function AddNewFile(filename) {
   let newLine = tempLine.cloneNode(true);
   let link = newLine.firstElementChild;
   link.textContent = filename;
-  link.href = "../uploads/" + filename;
+  link.href = `${filename}?form_id=get_file&filename=${filename}`;
   let buttons = newLine.querySelectorAll("button");
   buttons[0].addEventListener("click", function() {
     Approve(filename);
