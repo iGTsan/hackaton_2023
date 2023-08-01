@@ -62,7 +62,7 @@
     </div>
     <div class="app-content">
       <div class="app-sidebar">
-        <a href="hr.html" class="app-sidebar-link">
+        <a href="hr.html" class="app-sidebar-link active">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             class="feather feather-home">
@@ -70,7 +70,7 @@
             <polyline points="9 22 9 12 15 12 15 22" />
           </svg>
         </a>
-        <a href="rating.html" class="app-sidebar-link active">
+        <a href="table_all.html" class="app-sidebar-link">
           <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
             stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             class="feather feather-pie-chart" viewBox="0 0 24 24">
@@ -183,6 +183,7 @@
               </div>
               <form id="form_add_file" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="form_id" value="crit_5">
+                <input type="hidden" id="user_id_post" name="user_id" value="">
                 <div class="project-box-content-header">
                   <input type="file" placeholder="Загрузите сертификат" name="file_add1" class="form-file-input" id="customFileLg1">
                   <input type="file" placeholder="Загрузите программу" name="file_add2" class="form-file-input" id="customFileLg2">  
