@@ -1,4 +1,5 @@
 user_id_holder = document.getElementById("user_id");
+user_id_post = document.getElementById("user_id_post");
 
 rating_number = document.getElementById("rating_number");
 
@@ -31,7 +32,7 @@ function fillInfo(data) {
   crit_4_holder.textContent = crit_4;
   crit_5_holder.textContent = crit_5;
   sum_crit.textContent = data[15];
-  console.log(data);
+  // console.log(data);
 }
 
 function prepareInfo(data) {
@@ -41,20 +42,31 @@ function prepareInfo(data) {
     const code = data[1][1];
     document.cookie = `user_id=${user_id}`;
     document.cookie = `code=${code}`;
-    user_id_holder.textContent = user_id;
+    user_id_holder.textContent = "Id: " + user_id;
+    user_id_post.value = user_id;
   }
   data = data[0];
   fillInfo(data);
 }
 
+function badLogin() {
+  console.log("Bad login");
+  user_id_holder.textContent = "Login please";
+}
+
 function login(user_info) {
-  console.log(user_info);
-  let req = new XMLHttpRequest();
-  req.open("GET", user_info + "&form_id=get_user_info", true);
-  req.onload = function (){
-      prepareInfo(req.responseText);
+  // console.log(user_info);
+  if (user_info) {
+    let req = new XMLHttpRequest();
+    req.open("GET", user_info + "&form_id=get_user_info", true);
+    req.onload = function (){
+        prepareInfo(req.responseText);
+    }
+    req.send(null);
   }
-  req.send(null);
+  else {
+    badLogin();
+  }
 }
 
 function getCookie(name) {
@@ -79,18 +91,19 @@ function getUserInfo() {
   // Чтобы узнать больше об атрибуте «SameSite», прочитайте https://developer.mozilla.org/docs/Web/HTTP/Headers/Set-Cookie/SameSite
   let user_info = [parseURL("user_id"), parseURL("code")];
   if (user_info[0] != undefined) {
-    if (user_info[1] != undefined) {
+    if (user_info[1] != undefined)
       return `?user_id=${user_info[0]}&code=${user_info[1]}`;
     }
-  }
   user_info = [getCookie("user_id"), getCookie("code")];
-  return `?user_id=${user_info[0]}&code=${user_info[1]}`;
+  if (user_info[0] != undefined) {
+    if (user_info[1] != undefined)
+      return `?user_id=${user_info[0]}&code=${user_info[1]}`;
+    }
+  return undefined;
 }
 
 const user_info = getUserInfo();
 
+// console.log(user_info);
+
 login(user_info);
-
-//id="file_input_person" - для вставки и отправки файла подтверждения
-
-//+ нужно менять стиль у линии прогресса (там width - но это потом если нужно будет)

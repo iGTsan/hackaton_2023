@@ -1,8 +1,8 @@
 const http = require("http");
-const fs = require("fs");
-const formidable = require('formidable');
 const db_funcs = require("./my_modules/db");
+const fs = require("fs");
 const request_proc = require("./my_modules/request_proc");
+const files_proc = require("./my_modules/files");
 
 const rootPages = "./pages"
 
@@ -33,31 +33,6 @@ function getMimeType(path) {
 
 const server = http.createServer();
 
-function process_post(request, response) {
-	const form = formidable({ multiples: true, uploadDir : "./uploads"});
-	// console.log(request);
-	form.parse(request, (err, fields, files) => {
-		if (err) {
-			response.writeHead(err.httpCode || 400, { 'Content-Type': 'text/plain' });
-			response.end(String(err));
-			return;
-
-		}
-		// console.log(files);
-		// console.log(fields);
-		let cnt = 0
-		for (const key of Object.keys(files)) {
-	    cnt++;
-		}
-		if (cnt == 2) {
-			console.log(fields);
-			request_proc.proc_params(fields);
-		}
-	});
-
-	return;
-}
-
 
 server.on('request', async (request, response) => {
 	// console.log(request.url);
@@ -66,7 +41,7 @@ server.on('request', async (request, response) => {
 
 	if (request.method == "POST") {
 		// request.setTimeout(2000, process_post);
-		process_post(request, response);
+		files_proc.ProcessPost(request, response);
 	} if (url != '/favicon.ico') {
 		let path = rootPages+url;
 		let text;
