@@ -55,7 +55,9 @@ server.on('request', async (request, response) => {
         }
       })
     })
-	}
+	} else {
+    response.end();
+  }
 })
 
 server.listen(3000);
