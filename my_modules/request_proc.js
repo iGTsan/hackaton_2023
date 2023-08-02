@@ -1,8 +1,13 @@
 const db_funcs = require("./db");
 const fs = require("fs");
 
-const GRADE_FOR_USER_UPLOAD_5TH_CRIT = 5;
-const GRADE_FOR_HR_UPLOAD_3RD_CRIT = 5;
+const GRADES = {
+  1 : 5,
+  2 : 5,
+  3 : 5,
+  4 : 5,
+  5 : 5
+}
 
 module.exports.parse_params = async function(url) {
   const paramsRegExp = /[^?]+$/;
@@ -18,11 +23,11 @@ module.exports.parse_params = async function(url) {
   }
 }
 
-function admin_update_grades(params) {
+function update_grades(params) {
   try {
     let db_promise = db_funcs.open("database.db");
     db_promise.then((db) => {
-      // console.log(params);
+      console.log("UPDATE GRADES", params);
       let add_promise = db_funcs.add_grade(db,
          params["user_id"], params["crit"], params["podcrit"], params["grade"]);
       add_promise.then( () => {
@@ -35,59 +40,28 @@ function admin_update_grades(params) {
   return null;
 }
 
+function admin_update_grades(params) {
+  return update_grades(params);
+}
+
 function hr_update_grades(params) {
-  try {
-    let db_promise = db_funcs.open("database.db");
-    db_promise.then((db) => {
-      let add_promise = db_funcs.add_grade(db,
-         params["user_id"], 4, params["listGroupTask"], params["grade"]);
-      add_promise.then( () => {
-        // db_funcs.get_rating(db);
-      })
-      db.close();
-    })
-  } catch (err) {
-    console.log(err.message);
-  }
-  return null;
+  params["crit"] = 4;
+  params["podcrit"] = params["listGroupTask"];
+  return update_grades(params);
 }
 
 function hr_file_upload(params) {
-  console.log(params);
-  if (params["file_add_hr"]) {
-    try {
-      console.log();
-      let db_promise = db_funcs.open("database.db");
-      db_promise.then((db) => {
-        let add_promise = db_funcs.add_grade(db,
-           params["user_id"], 3, params["listGroupTask"], GRADE_FOR_HR_UPLOAD_3RD_CRIT);
-        add_promise.then( () => {
-          // db_funcs.get_rating(db);
-        })
-      })
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
-  return null;
+  params["crit"] = 3;
+  params["podcrit"] = params["listGroupTask"];
+  params["grade"] = GRADES[params["crit"]];
+  return update_grades(params);
 }
 
 function user_file_upload(params) {
-  if (params["file_add1"] && params["file_add2"]) {
-    try {
-      let db_promise = db_funcs.open("database.db");
-      db_promise.then((db) => {
-        let add_promise = db_funcs.add_grade(db,
-           params["user_id"], 5, 1, GRADE_FOR_USER_UPLOAD_5TH_CRIT);
-        add_promise.then( () => {
-          // db_funcs.get_rating(db);
-        })
-      })
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
-  return null;
+  params["crit"] = 5;
+  params["podcrit"] = 1;
+  params["grade"] = GRADES[params["crit"]];
+  return update_grades(params);
 }
 
 function check(db, params) {
@@ -246,6 +220,84 @@ function get_user_info(params) {
   });
 }
 
+function get_files(params) {
+  return new Promise(function(resolve, reject) {
+    try {
+      const directoryPath = './uploads';
+      fs.readdir(directoryPath, (err, files) => {
+        if (err) {
+          console.error('Ошибка при чтении директории:', err);
+          return;
+        }
+        let filenames = ""
+        files.forEach(file => {
+          filenames += file + '\n';
+        });
+        resolve(filenames);
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
+  });
+}
+
+function get_file(params) {
+  return new Promise(function(resolve, reject) {
+    const filePath = "./uploads/" + params['filename'];
+    // console.log(filePath);
+    try {
+
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        resolve('Файл не найден.');
+      }
+
+      // Читаем файл целиком в буфер
+      fs.readFile(filePath, (err, data) => {
+        if (err) {
+          console.error('Ошибка при чтении файла:', err);
+          resolve('Произошла ошибка при скачивании файла.');
+        } else {
+          resolve(data);
+        }
+      });
+    });
+    } catch (err) {
+      console.log("GetFile error");
+      console.log(err.message);
+    }
+  });
+}
+
+function ParseFilename(filename) {
+  const usefull = filename.split(".")[0];
+  const params = usefull.split("-");
+  let res = new Map();
+  res["user_id"] = params[0].split("_")[1];
+  res["crit"] = params[1].split("_")[1];
+  if (params[2])
+    res["podcrit"] = params[2];
+  return res;
+}
+
+function approve_file(params) {
+  params = ParseFilename(params["filename"]);
+  params["crit"] = params["crit"];
+  params["podcrit"] = params["podcrit"];
+  params["grade"] = GRADES[params["crit"]];
+  return update_grades(params);
+
+  return null;
+}
+
+function reject_file(params) {
+  params = ParseFilename(params["filename"]);
+  console.log("File rejected");
+  console.log(params);
+
+  return null;
+}
+
 const FORMS_ROUTE = {
   // '1' : proc_id,
   '2' : hr_update_grades,
@@ -255,7 +307,12 @@ const FORMS_ROUTE = {
   '6' : update_rating,
   'login' : user_login,
   'get_table' : get_table,
-  'get_user_info' : get_user_info
+  'get_user_info' : get_user_info,
+  'crit_5' : user_file_upload,
+  'get_files' : get_files,
+  'get_file' : get_file,
+  'approve_file' : approve_file,
+  'reject_file' : reject_file
 }
 
 module.exports.proc_params = async function(params) {

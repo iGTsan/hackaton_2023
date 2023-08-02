@@ -1,3 +1,8 @@
 /node_modules
 .DS_Store
-db/
+server.js
+/my_modules
+package-lock.json
+package.json
+pages/.DS_Store
+README.md
