@@ -1083,8 +1083,6 @@ body {
 
 .xls{
   padding-top: 15px;
-  background-color: var(--app-container);
-  border-radius: 20px;
 }
 
 .hidden {
