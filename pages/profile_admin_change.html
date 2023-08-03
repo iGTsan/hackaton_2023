@@ -91,9 +91,10 @@
                 </a>
             </div>
             <div class="projects-section">
+                <button class="back_btn" onclick="location.href='profile_admin.html'""">Назад</button>
                 <form id="form_user_id">
-                    <button class="back_btn" onclick="location.href='profile_hr.html'""">Назад</button>
-                    <div class="body">      
+                    <div class="body">
+                        <p><b>Для оценки работы введите ID пользователя</b></p>
                         <div class="row g-3 align-items-center">
                             <div class="col-auto">
                                 <label for="inputPassword6" class="col-form-label">ID пользователя:</label>
@@ -108,27 +109,19 @@
                     </div>
                 </form>
                 <div class="body">
-                    <form id="form_update">
+                    <form id="form_update" class="hidden">
                         <b>
                             <p>Оцените работу:</p>
                         </b>
-                        <p><em>HR-менеджер выставляет баллы по четвертому критерию.</em></p>
-                        <input type="hidden" name="form_id" value="2">
-                        <div style="margin-bottom: 15px;">
-                            <div class="list-group">
-                                <div class="list-group-item">
-                                    <input class="form-check-input me-1" type="radio" name="listGroupTask" value="1"
-                                        id="firstTask" checked>
-                                    <label class="form-check-label" for="firstTask">Задание 1</label>
-                                </div>
-                                <div class="list-group-item">
-                                    <input class="form-check-input me-1" type="radio" name="listGroupTask" value="2"
-                                        id="secondTask">
-                                    <label class="form-check-label" for="secondTask">Задание 2</label>
-                                </div>
-                            </div>
-                        </div>
+                        <input type="hidden" name="form_id" value="3">
                         <div class="form-row">
+                            <div class="col-auto">
+                                <input name="crit" type="number" class="form-control" placeholder="Номер критерия">
+                            </div>
+                            <div class="col-auto">
+                                <p></p><input name="podcrit" type="number" class="form-control"
+                                    placeholder="Номер задачи"></p>
+                            </div>
                             <div class="col">
                                 <p><input name="grade" type="number" class="form-control" placeholder="Балл"></p>
                             </div>
@@ -136,8 +129,9 @@
                         </div>
                     </form>
                 </div>
-                <script src="./scripts/hr.js"></script>
             </div>
+        </div>
+        <script src="./scripts/hr.js"></script>
 </body>
 
 </html>
