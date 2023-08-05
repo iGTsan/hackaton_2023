@@ -27,12 +27,21 @@ function update_grades(params) {
   try {
     let db_promise = db_funcs.open("database.db");
     db_promise.then((db) => {
-      console.log("UPDATE GRADES", params);
-      let add_promise = db_funcs.add_grade(db,
+      db_funcs.add_grade(db,
          params["user_id"], params["crit"], params["podcrit"], params["grade"]);
-      add_promise.then( () => {
-        // db_funcs.get_rating(db);
-      })
+    })
+  } catch (err) {
+    console.log(err.message);
+  }
+  return null;
+}
+
+function set_grades(params) {
+  try {
+    let db_promise = db_funcs.open("database.db");
+    db_promise.then((db) => {
+      db_funcs.set_grade(db,
+         params["user_id"], params["crit"], params["podcrit"], params["grade"]);
     })
   } catch (err) {
     console.log(err.message);
@@ -62,6 +71,13 @@ function user_file_upload(params) {
   params["podcrit"] = 1;
   params["grade"] = GRADES[params["crit"]];
   return update_grades(params);
+}
+
+function update_tests(params) {
+  params["crit"] = 4;
+  params["podcrit"] = 1;
+  params["grade"] = (GRADES[4] * params["grade"]) / 100;
+  return set_grades(params);
 }
 
 function check(db, params) {
@@ -229,7 +245,7 @@ function get_files(params) {
           console.error('Ошибка при чтении директории:', err);
           return;
         }
-        let filenames = ""
+        let filenames = "\n"
         files.forEach(file => {
           filenames += file + '\n';
         });
@@ -244,7 +260,6 @@ function get_files(params) {
 function get_file(params) {
   return new Promise(function(resolve, reject) {
     const filePath = "./uploads/" + params['filename'];
-    // console.log(filePath);
     try {
 
     fs.access(filePath, fs.constants.F_OK, (err) => {
@@ -286,8 +301,6 @@ function approve_file(params) {
   params["podcrit"] = params["podcrit"];
   params["grade"] = GRADES[params["crit"]];
   return update_grades(params);
-
-  return null;
 }
 
 function reject_file(params) {
@@ -312,7 +325,8 @@ const FORMS_ROUTE = {
   'get_files' : get_files,
   'get_file' : get_file,
   'approve_file' : approve_file,
-  'reject_file' : reject_file
+  'reject_file' : reject_file,
+  'update_tests' : update_tests,
 }
 
 module.exports.proc_params = async function(params) {

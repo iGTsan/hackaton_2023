@@ -53,10 +53,9 @@ module.exports.open = async function (filename) {
       if (err) {
         return console.error(err.message);
       }
-      console.log('Connected to the SQlite database.');
+      console.log(`Connected to the SQlite database ${filename}.`);
       resolve(db);
     });
-    console.log("DB returned");
   });
 }
 
@@ -64,6 +63,19 @@ module.exports.add_grade = async function (db, user_id, criterion, grade_num, gr
   const data = [grade, user_id];
   const sql = `UPDATE criterion_${criterion}
               SET grade_${grade_num} = grade_${grade_num} + ?
+              WHERE user_id = ?`;
+  db.run(sql, data, function(err) {
+    if (err) {
+      return console.error(err.message);
+    }
+    console.log(`Row(s) updated: ${this.changes}`);
+  });
+}
+
+module.exports.set_grade = async function (db, user_id, criterion, grade_num, grade) {
+  const data = [grade, user_id];
+  const sql = `UPDATE criterion_${criterion}
+              SET grade_${grade_num} = ?
               WHERE user_id = ?`;
   db.run(sql, data, function(err) {
     if (err) {
