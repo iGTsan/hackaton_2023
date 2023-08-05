@@ -95,7 +95,7 @@
                 <button class="back_btn" onclick="location.href='profile_admin.html'">Назад</button>
                 <div class="project-box-content-header xls">
                     <form id="parse_xlsx" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="excel_parse" value="">
+                        <input type="hidden" name="excel_parse" value="excel_parse">
                         <div class="form-file form-file-lg mb-3">
                             <p><b>Выберите файл .xls, чтобы добавить пользователей:</b></p>
                             <p><em>Формат .xls файла: первый столбец - ID, <br>второй - уникальный код.</em></p>
@@ -106,7 +106,7 @@
                         </div>
                     </form>
                     <form id="parse_xlsx_tests" method="post" enctype="multipart/form-data" style="margin-top: 50px;">
-                        <input type="hidden" name="excel_parse_tests" value="">
+                        <input type="hidden" name="excel_parse_tests" value="excel_parse_tests">
                         <div class="form-file form-file-lg mb-3">
                             <p><b>Выберите файл .xls, чтобы добавить результаты тестов:</b></p>
                             <input type="file" name="file_add_admin" class="form-file-input" id="customFileLg">
