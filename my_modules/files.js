@@ -61,6 +61,8 @@ module.exports.ProcessPost = async function(request, response) {
     form_id = 'form_id';
     if (fields[form_id] in FORMS_ROUTE)
       return FORMS_ROUTE[fields[form_id]](files, fields, cnt);
+    else
+      console.log(fields);
 	});
 
 	return;
