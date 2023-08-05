@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Подтверждение файлов</title>
+    <title>Изменение данных</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./img/favicon.ico">
@@ -92,30 +92,47 @@
                 </a>
             </div>
             <div class="projects-section">
-                <div class="body" id="body">
-                    <button class="back_btn" onclick="location.href='profile_hr.html'">Назад</button>
-                    <form id="form_update">
+                <button class="back_btn" onclick="location.href='profile_admin.html'">Назад</button>
+                <form id="form_user_id">
+                    <div class="body">
+                        <p><b>Для оценки работы введите ID пользователя</b></p>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <label for="inputPassword6" class="col-form-label">ID пользователя:</label>
+                            </div>
+                            <div class="col-auto">
+                                <input name="user_id" type="number" class="form-control" placeholder="ID пользователя">
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary">Подтвердить</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="body">
+                    <form id="form_update" class="hidden">
                         <b>
-                            <p>Прикрепленные файлы:</p>
+                            <p>Оцените работу:</p>
                         </b>
-                        <p><em>HR-менеджер выставляет баллы за прикрепленные пользователем файлы.</em></p>
-                        <input type="hidden" name="form_id" value="2">
-                        <div id="list" style="margin-bottom: 15px;">
-                            <div class="file_approve" style="margin-bottom: 15px;">
-                                <a href="http://example.com/kolbasa-primer.xlsx" download style="margin-right: 20px;">1 файл</a>
-                                <button type="button" class="btn btn-success">Ок</button>
-                                <button type="button" class="btn btn-secondary">Не ок</button>
+                        <input type="hidden" name="form_id" value="3">
+                        <div class="form-row">
+                            <div class="col-auto">
+                                <input name="crit" type="number" class="form-control" placeholder="Номер критерия">
                             </div>
-                            <div class="file_approve" style="margin-bottom: 15px;">
-                                <a href="http://example.com/kolbasa-primer.xlsx" download style="margin-right: 20px;">2 файл</a>
-                                <button type="button" class="btn btn-success">Ок</button>
-                                <button type="button" class="btn btn-secondary">Не ок</button>
+                            <div class="col-auto">
+                                <p></p><input name="podcrit" type="number" class="form-control"
+                                    placeholder="Номер задачи"></p>
                             </div>
+                            <div class="col">
+                                <p><input name="grade" type="number" class="form-control" placeholder="Балл"></p>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Подтвердить</button>
                         </div>
                     </form>
                 </div>
             </div>
-            <script src="./scripts/approve_files.js"></script>
+        </div>
+        <script src="./scripts/hr.js"></script>
 </body>
 
 </html>
