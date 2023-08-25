@@ -7,3 +7,5 @@ package.json
 pages/.DS_Store
 README.md
 db/
+db_old/
+uploads/

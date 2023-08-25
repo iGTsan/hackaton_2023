@@ -38,8 +38,8 @@ async function excel_parse(files, fields, cnt) {
   const filename = files['file_add_admin'].filepath;
 
   try {
-    let db_grades_promise = db_funcs.open("database.db");
-    let db_users_promise = db_funcs.open("users.db");
+    let db_grades_promise = db_funcs.open("database");
+    let db_users_promise = db_funcs.open("users");
     db_grades_promise.then((db_grades) => {
       db_users_promise.then((db_users) => {
         db_funcs.add_users(db_grades, db_users, filename).then((add_promise) => {
