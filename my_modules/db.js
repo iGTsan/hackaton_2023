@@ -47,14 +47,112 @@ module.exports.add_users = async function (db_grades, db_users, file) {
   });
 }
 
+function create_folder(path) {
+  return new Promise(function(resolve, reject) {
+    fs.access(path, fs.constants.F_OK, (err) => {
+      if (err) {// Создаем папку
+        fs.mkdir(path, { recursive: true }, (err) => {
+          if (err) {
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        });
+      } else {
+        resolve(false);
+      }
+    });
+  });
+}
+
+async function run_sql_command(db, command) {
+  return new Promise(function(resolve, reject) {
+    const res = db.run(command, [], function(err) {
+      // console.log(`Command: ${command} applied`);
+      resolve(db);
+    });
+  });
+}
+
+async function run_sql_script(db, script) {
+  console.log("Running SQL script");
+  const commands = script.split('\n');
+  for (let i = 0; i < commands.length; i++) {
+    db = await run_sql_command(db, commands[i]);
+  }
+  console.log("SQL script ended");
+  return new Promise(function(resolve, reject) {
+    resolve(db);
+  });
+}
+
+function fill_db(db, filename) {
+  const filePath = `./testfiles/${filename}.sql`;
+  return new Promise(function(resolve, reject) {
+    fs.readFile(filePath, 'utf8', (err, text) => {
+      if (err) {
+        console.log(err, "Error while opening file while filling DB");
+        resolve(undefined);
+      } else {
+        console.log("SQL file openned");
+        run_sql_script(db, text).then(filled_db => {
+          console.log("Table filled");
+          resolve(filled_db);
+        });
+      }
+    });
+  });
+} 
+
+function create_db(filename) {
+  return new Promise(function(resolve, reject) {
+    let db = new sqlite3.Database(`./db/${filename}.db`, (err) => {
+      if (err) {
+        create_folder('./db').then(created => {
+          if (created) {
+            console.log("Another try to create DB");
+            create_db(filename).then(res => {
+              resolve(res);
+            });
+          } else {
+            console.log("Can't create DB in create_db");
+            console.error(err);
+            resolve(undefined);
+          }
+        });
+      } else {
+        console.log(`DB created ${filename}.db.`);
+        fill_db(db, filename).then(filled_db => {
+          console.log(`Filled db ${filename}.db. getted`);
+          resolve(filled_db);
+          console.log(`Filled db ${filename}.db. resolved`);
+        });
+      }
+    });
+  });
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
 module.exports.open = async function (filename) {
   return new Promise(function(resolve, reject) {
-    let db = new sqlite3.Database(`./db/${filename}`, (err) => {
+    let db = new sqlite3.Database(`./db/${filename}.db`, sqlite3.OPEN_READWRITE, (err) => {
       if (err) {
-        return console.error(err.message);
+        create_db(filename).then(res => {
+          if (res == undefined) {
+            console.log("Can't create DB in open");
+            console.error(err);
+          }
+          resolve(res);
+        });
+      } else {
+        console.log(`Connected to the SQlite database ${filename}.db.`);
+        resolve(db);
       }
-      console.log(`Connected to the SQlite database ${filename}.`);
-      resolve(db);
     });
   });
 }
