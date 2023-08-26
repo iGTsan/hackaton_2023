@@ -9,3 +9,4 @@ README.md
 db/
 db_old/
 uploads/
+package-lock.json

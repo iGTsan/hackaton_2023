@@ -13,7 +13,7 @@ const server = http.createServer();
 
 function LogIP() {
   const networkInterfaces = os.networkInterfaces();
-  const localInterface = networkInterfaces['Wi-Fi'] || networkInterfaces['Ethernet'] || networkInterfaces['en0'] || [];
+  const localInterface = networkInterfaces['Wi-Fi'] || networkInterfaces['Ethernet'] || networkInterfaces['en0'] || networkInterfaces['wlo1'] || [];
   
   // Фильтруем только IPv4 адреса
   const localIPv4 = localInterface.find((iface) => iface.family === 'IPv4');
