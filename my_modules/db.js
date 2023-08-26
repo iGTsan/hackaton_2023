@@ -19,6 +19,8 @@ module.exports.insert = async function (db, tablename, values) {
   const querry = `INSERT INTO ${TABLE_STRUCT[tablename]}`;
   db.run(querry, values, function(err) {
     if (err) {
+      console.log(`INSERT INTO ${TABLE_STRUCT[tablename]}`);
+      console.log(values);
       return console.log("Error", err.message);
     }
     // get the last insert id
@@ -31,8 +33,8 @@ module.exports.add_user = async function (db_grades, db_users, user_id, code) {
   const CRITERION_NUM = 5;
   for (let i = 1; i <= CRITERION_NUM; i++) {
     module.exports.insert(db_grades, `criterion_${i}`, user_id);
-  module.exports.insert(db_users, "registered_users", [user_id, code]);
   }
+  module.exports.insert(db_users, "registered_users", [user_id, code]);
 }
 
 module.exports.add_users = async function (db_grades, db_users, file) {
@@ -67,6 +69,7 @@ function create_folder(path) {
 
 async function run_sql_command(db, command) {
   return new Promise(function(resolve, reject) {
+    // console.log(`Command: ${command} started`);
     const res = db.run(command, [], function(err) {
       // console.log(`Command: ${command} applied`);
       resolve(db);
@@ -102,7 +105,7 @@ function fill_db(db, filename) {
       }
     });
   });
-} 
+}
 
 function create_db(filename) {
   return new Promise(function(resolve, reject) {
