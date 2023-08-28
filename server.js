@@ -5,7 +5,9 @@ const db_funcs = require("./my_modules/db");
 const request_proc = require("./my_modules/request_proc");
 const files_proc = require("./my_modules/files");
 const mimes = require("./my_modules/mimes");
-const { log } = require("console");
+const Backuper = require("./my_modules/backups");
+
+const backuper = new Backuper();
 
 const rootPages = "./pages"
 
@@ -27,6 +29,9 @@ function LogIP() {
 
 server.on('request', async (request, response) => {
 	// console.log(request.url);
+
+  backuper.Backup();
+
   const urlRegExp = /^[^?]+/;
   const url = request.url.match(urlRegExp)[0];
 

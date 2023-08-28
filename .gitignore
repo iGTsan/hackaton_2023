@@ -1,7 +1,6 @@
 /node_modules
 .DS_Store
 server.js
-/my_modules
 package-lock.json
 package.json
 pages/.DS_Store
@@ -10,3 +9,4 @@ db/
 db_old/
 uploads/
 package-lock.json
+backup/
