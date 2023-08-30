@@ -1,5 +1,8 @@
 const fs = require("fs");
 const formidable = require('formidable');
+const db_funcs = require('./db')
+const request_proc = require('./request_proc')
+const xlsx_parse = require('./xlsx_parse')
 
 const UPLOAD_DIR = "./uploads"
 
@@ -28,6 +31,47 @@ async function user_file_upload(files, fields, cnt) {
   // request_proc.proc_params(fields);
 }
 
+async function excel_parse(files, fields, cnt) {
+  if (cnt != 1)
+    return;
+
+  const filename = files['file_add_admin'].filepath;
+
+  try {
+    let db_grades_promise = db_funcs.open("database");
+    let db_users_promise = db_funcs.open("users");
+    db_grades_promise.then((db_grades) => {
+      db_users_promise.then((db_users) => {
+        db_funcs.add_users(db_grades, db_users, filename).then((add_promise) => {
+          fs.unlinkSync(filename);
+        });
+      })
+    })
+  } catch (err) {
+    console.log(err.message);
+  }
+
+
+}
+
+async function excel_parse_tests(files, fields, cnt) {
+  if (cnt != 1)
+    return;
+
+  const filename = files['file_add_admin'].filepath;
+  const grades = await xlsx_parse.parse_for_grades(filename);
+  fs.unlinkSync(filename);
+
+  grades.forEach((row) => {
+    let params = {
+      'form_id' : 'update_tests'
+    };
+    params['user_id'] = row[0];
+    params['grade'] = row[1];
+    request_proc.proc_params(params);
+  });
+}
+
 const FORMS_ROUTE = {
   // '1' : proc_id,
   // '2' : hr_update_grades,
@@ -36,8 +80,8 @@ const FORMS_ROUTE = {
   // '5' : user_file_upload,
   // '6' : update_rating,
   // 'login' : user_login,
-  // 'get_table' : get_table,
-  // 'get_user_info' : get_user_info,
+  'excel_parse_tests' : excel_parse_tests,
+  'excel_parse' : excel_parse,
   'crit_5' : user_file_upload
 }
 
@@ -61,6 +105,8 @@ module.exports.ProcessPost = async function(request, response) {
     form_id = 'form_id';
     if (fields[form_id] in FORMS_ROUTE)
       return FORMS_ROUTE[fields[form_id]](files, fields, cnt);
+    else
+      console.log(fields);
 	});
 
 	return;

@@ -1,14 +1,29 @@
 const http = require("http");
-const db_funcs = require("./my_modules/db");
 const fs = require("fs");
+const os = require('os');
+const db_funcs = require("./my_modules/db");
 const request_proc = require("./my_modules/request_proc");
 const files_proc = require("./my_modules/files");
 const mimes = require("./my_modules/mimes");
+const { log } = require("console");
 
 const rootPages = "./pages"
 
 const server = http.createServer();
 
+function LogIP() {
+  const networkInterfaces = os.networkInterfaces();
+  const localInterface = networkInterfaces['Wi-Fi'] || networkInterfaces['Ethernet'] || networkInterfaces['en0'] || networkInterfaces['wlo1'] || [];
+  
+  // Фильтруем только IPv4 адреса
+  const localIPv4 = localInterface.find((iface) => iface.family === 'IPv4');
+
+  if (localIPv4) {
+    console.log('Ваш локальный IPv4 адрес:', localIPv4.address);
+  } else {
+    console.log('Локальный IPv4 адрес не найден.');
+  }
+}
 
 server.on('request', async (request, response) => {
 	// console.log(request.url);
@@ -55,7 +70,11 @@ server.on('request', async (request, response) => {
         }
       })
     })
-	}
+	} else {
+    response.end();
+  }
 })
+
+LogIP()
 
 server.listen(3000);

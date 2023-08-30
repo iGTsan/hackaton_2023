@@ -19,6 +19,6 @@ module.exports.getMimeType = function(path) {
 	if (ext) {
 		return mimes[ext];
 	} else {
-		return 'text/html';
+		return 'text/plain';
 	}
 }

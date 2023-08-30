@@ -19,6 +19,8 @@ module.exports.insert = async function (db, tablename, values) {
   const querry = `INSERT INTO ${TABLE_STRUCT[tablename]}`;
   db.run(querry, values, function(err) {
     if (err) {
+      console.log(`INSERT INTO ${TABLE_STRUCT[tablename]}`);
+      console.log(values);
       return console.log("Error", err.message);
     }
     // get the last insert id
@@ -31,8 +33,8 @@ module.exports.add_user = async function (db_grades, db_users, user_id, code) {
   const CRITERION_NUM = 5;
   for (let i = 1; i <= CRITERION_NUM; i++) {
     module.exports.insert(db_grades, `criterion_${i}`, user_id);
-  module.exports.insert(db_users, "registered_users", [user_id, code]);
   }
+  module.exports.insert(db_users, "registered_users", [user_id, code]);
 }
 
 module.exports.add_users = async function (db_grades, db_users, file) {
@@ -47,16 +49,114 @@ module.exports.add_users = async function (db_grades, db_users, file) {
   });
 }
 
-module.exports.open = async function (filename) {
+function create_folder(path) {
   return new Promise(function(resolve, reject) {
-    let db = new sqlite3.Database(`./db/${filename}`, (err) => {
-      if (err) {
-        return console.error(err.message);
+    fs.access(path, fs.constants.F_OK, (err) => {
+      if (err) {// Создаем папку
+        fs.mkdir(path, { recursive: true }, (err) => {
+          if (err) {
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        });
+      } else {
+        resolve(false);
       }
-      console.log('Connected to the SQlite database.');
+    });
+  });
+}
+
+async function run_sql_command(db, command) {
+  return new Promise(function(resolve, reject) {
+    // console.log(`Command: ${command} started`);
+    const res = db.run(command, [], function(err) {
+      // console.log(`Command: ${command} applied`);
       resolve(db);
     });
-    console.log("DB returned");
+  });
+}
+
+async function run_sql_script(db, script) {
+  console.log("Running SQL script");
+  const commands = script.split('\n');
+  for (let i = 0; i < commands.length; i++) {
+    db = await run_sql_command(db, commands[i]);
+  }
+  console.log("SQL script ended");
+  return new Promise(function(resolve, reject) {
+    resolve(db);
+  });
+}
+
+function fill_db(db, filename) {
+  const filePath = `./testfiles/${filename}.sql`;
+  return new Promise(function(resolve, reject) {
+    fs.readFile(filePath, 'utf8', (err, text) => {
+      if (err) {
+        console.log(err, "Error while opening file while filling DB");
+        resolve(undefined);
+      } else {
+        console.log("SQL file openned");
+        run_sql_script(db, text).then(filled_db => {
+          console.log("Table filled");
+          resolve(filled_db);
+        });
+      }
+    });
+  });
+}
+
+function create_db(filename) {
+  return new Promise(function(resolve, reject) {
+    let db = new sqlite3.Database(`./db/${filename}.db`, (err) => {
+      if (err) {
+        create_folder('./db').then(created => {
+          if (created) {
+            console.log("Another try to create DB");
+            create_db(filename).then(res => {
+              resolve(res);
+            });
+          } else {
+            console.log("Can't create DB in create_db");
+            console.error(err);
+            resolve(undefined);
+          }
+        });
+      } else {
+        console.log(`DB created ${filename}.db.`);
+        fill_db(db, filename).then(filled_db => {
+          console.log(`Filled db ${filename}.db. getted`);
+          resolve(filled_db);
+          console.log(`Filled db ${filename}.db. resolved`);
+        });
+      }
+    });
+  });
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+module.exports.open = async function (filename) {
+  return new Promise(function(resolve, reject) {
+    let db = new sqlite3.Database(`./db/${filename}.db`, sqlite3.OPEN_READWRITE, (err) => {
+      if (err) {
+        create_db(filename).then(res => {
+          if (res == undefined) {
+            console.log("Can't create DB in open");
+            console.error(err);
+          }
+          resolve(res);
+        });
+      } else {
+        console.log(`Connected to the SQlite database ${filename}.db.`);
+        resolve(db);
+      }
+    });
   });
 }
 
@@ -64,6 +164,19 @@ module.exports.add_grade = async function (db, user_id, criterion, grade_num, gr
   const data = [grade, user_id];
   const sql = `UPDATE criterion_${criterion}
               SET grade_${grade_num} = grade_${grade_num} + ?
+              WHERE user_id = ?`;
+  db.run(sql, data, function(err) {
+    if (err) {
+      return console.error(err.message);
+    }
+    console.log(`Row(s) updated: ${this.changes}`);
+  });
+}
+
+module.exports.set_grade = async function (db, user_id, criterion, grade_num, grade) {
+  const data = [grade, user_id];
+  const sql = `UPDATE criterion_${criterion}
+              SET grade_${grade_num} = ?
               WHERE user_id = ?`;
   db.run(sql, data, function(err) {
     if (err) {

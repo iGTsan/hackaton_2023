@@ -25,14 +25,23 @@ module.exports.parse_params = async function(url) {
 
 function update_grades(params) {
   try {
-    let db_promise = db_funcs.open("database.db");
+    let db_promise = db_funcs.open("database");
     db_promise.then((db) => {
-      console.log("UPDATE GRADES", params);
-      let add_promise = db_funcs.add_grade(db,
+      db_funcs.add_grade(db,
          params["user_id"], params["crit"], params["podcrit"], params["grade"]);
-      add_promise.then( () => {
-        // db_funcs.get_rating(db);
-      })
+    })
+  } catch (err) {
+    console.log(err.message);
+  }
+  return null;
+}
+
+function set_grades(params) {
+  try {
+    let db_promise = db_funcs.open("database");
+    db_promise.then((db) => {
+      db_funcs.set_grade(db,
+         params["user_id"], params["crit"], params["podcrit"], params["grade"]);
     })
   } catch (err) {
     console.log(err.message);
@@ -62,6 +71,13 @@ function user_file_upload(params) {
   params["podcrit"] = 1;
   params["grade"] = GRADES[params["crit"]];
   return update_grades(params);
+}
+
+function update_tests(params) {
+  params["crit"] = 4;
+  params["podcrit"] = 1;
+  params["grade"] = (GRADES[4] * params["grade"]) / 100;
+  return set_grades(params);
 }
 
 function check(db, params) {
@@ -99,7 +115,7 @@ async function generate_good_login(params) {
   console.log("Good login");
   text = "";
   return new Promise(function(resolve, reject) {
-    let db_promise = db_funcs.open("database.db");
+    let db_promise = db_funcs.open("database");
     db_promise.then((db) => {
       let rating_promise = db_funcs.gen_user_rating(db, params["user_id"])
       rating_promise.then((rating) => {
@@ -118,7 +134,7 @@ async function generate_good_login(params) {
 function user_login(params) {
   return new Promise(function(resolve, reject) {
     try {
-      let db_promise = db_funcs.open("users.db");
+      let db_promise = db_funcs.open("users");
       db_promise.then((db) => {
         let check_promise = check(db, params)
         console.log("Start checking");
@@ -143,7 +159,7 @@ function user_login(params) {
 
 async function update_rating(params) {
   try {
-    let db_promise = db_funcs.open("database.db");
+    let db_promise = db_funcs.open("database");
     let res = await fs.promises.readFile("pages/table_all_cropped.html");
     db_promise.then((db) => {
       let rating_promise = db_funcs.gen_rating(db);
@@ -176,10 +192,8 @@ async function update_rating(params) {
 function get_table(params) {
   return new Promise(function(resolve, reject) {
     try {
-      let db_promise = db_funcs.open("database.db");
-      db_promise.then((db) => {
-        let rating_promise = db_funcs.gen_rating(db);
-        rating_promise.then((rating) => {
+      db_funcs.open("database").then((db) => {
+        db_funcs.gen_rating(db).then((rating) => {
           let res = "";
           rating.forEach((item, i) => {
             const row = `${item["ID"]} ${item["GRADE_1"]} ${item["GRADE_2"]} ${item["GRADE_3"]} ${item["GRADE_4"]} ${item["GRADE_5"]} ${item["TOTAL_GRADE"]}\n`
@@ -197,7 +211,7 @@ function get_table(params) {
 function get_user_info(params) {
   return new Promise(function(resolve, reject) {
     try {
-      let db_promise = db_funcs.open("users.db");
+      let db_promise = db_funcs.open("users");
       db_promise.then((db) => {
         let check_promise = check(db, params)
         console.log("Start checking");
@@ -229,7 +243,7 @@ function get_files(params) {
           console.error('Ошибка при чтении директории:', err);
           return;
         }
-        let filenames = ""
+        let filenames = "\n"
         files.forEach(file => {
           filenames += file + '\n';
         });
@@ -244,7 +258,6 @@ function get_files(params) {
 function get_file(params) {
   return new Promise(function(resolve, reject) {
     const filePath = "./uploads/" + params['filename'];
-    // console.log(filePath);
     try {
 
     fs.access(filePath, fs.constants.F_OK, (err) => {
@@ -286,8 +299,6 @@ function approve_file(params) {
   params["podcrit"] = params["podcrit"];
   params["grade"] = GRADES[params["crit"]];
   return update_grades(params);
-
-  return null;
 }
 
 function reject_file(params) {
@@ -312,7 +323,8 @@ const FORMS_ROUTE = {
   'get_files' : get_files,
   'get_file' : get_file,
   'approve_file' : approve_file,
-  'reject_file' : reject_file
+  'reject_file' : reject_file,
+  'update_tests' : update_tests,
 }
 
 module.exports.proc_params = async function(params) {

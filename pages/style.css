@@ -149,6 +149,7 @@ a {
   line-height: 24px;
   font-weight: 700;
   margin: 0 32px;
+  font-family: "DM Sans";
 }
 
 .mode-switch {
@@ -1083,10 +1084,26 @@ body {
 
 .xls{
   padding-top: 15px;
-  background-color: var(--app-container);
-  border-radius: 20px;
 }
 
 .hidden {
     display: none;
+}
+
+.back_btn{
+  background-color: rgb(214, 214, 255); 
+  width: 100px; 
+  height: 35px; 
+  margin-bottom: 10px;
+  border-radius: 20px;
+<<<<<<< HEAD
+}
+
+.hidden {
+    display: none;
+=======
+  font-weight: 600;
+  padding-top: 5px;
+  padding-bottom: 5px;
+>>>>>>> 558d91c68440d9006806d4e86f6df96907c10a2e
 }
