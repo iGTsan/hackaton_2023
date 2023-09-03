@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Изменение данных</title>
+    <title>Загрузка данных</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel="stylesheet" href="../style.css">
-    <link rel="icon" href="../img/favicon.ico">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="icon" href="../../img/favicon.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
@@ -72,7 +72,7 @@
                         <polyline points="9 22 9 12 15 12 15 22" />
                     </svg>
                 </a>
-                <a href="../table_all.html" class="app-sidebar-link">
+                <a href="table_all.html" class="app-sidebar-link">
                     <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                         stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         class="feather feather-pie-chart" viewBox="0 0 24 24">
@@ -82,43 +82,44 @@
                 </a>
             </div>
             <div class="projects-section">
-                <button class="back_btn" onclick="location.href='profile_admin.html'">Назад</button>
-                <form id="form_user_id">
-                    <div class="body">
-                        <p><b>Для оценки работы введите ID пользователя</b></p>
-                        <div class="row g-3 align-items-center">
-                            <div class="col-auto">
-                                <label for="inputPassword6" class="col-form-label">ID пользователя:</label>
-                            </div>
-                            <div class="col-auto">
-                                <input name="user_id" type="number" class="form-control" placeholder="ID пользователя">
-                            </div>
-                            <div class="col-auto">
+                <button class="back_btn" onclick="location.href='../crit_admin.html'">Назад</button>
+                <div class="project-box-content-header xls">
+                    <h3 style="margin-bottom: 20px;">Критерий №1. "Проектная работа"</h3>
+                    <div class="project-box years">
+                        <h4>1 этап - 20 баллов</h4>
+                        <form id="parse_xlsx_tests" method="post" enctype="multipart/form-data"
+                            style="margin-top: 10px;">
+                            <input type="hidden" name="form_id" value="excel_parse_tests">
+                            <div class="form-file form-file-lg mb-3">
+                                <p><b>Выберите файл .xls, чтобы добавить результаты:</b></p>
+                                <p style="margin: 15px;"><em>Формат .xls файла: первый столбец - ID, второй - количество
+                                        баллов (из 20).</em></p>
+                                <input type="file" name="file_add_admin" class="form-file-input" id="customFileLg">
+                                <label class="form-file-label" for="customFileLg">
+                                </label>
                                 <button type="submit" class="btn btn-primary">Подтвердить</button>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </form>
-                <div class="body">
-                    <form id="form_update" class="hidden">
-                        <b>
-                            <p>Оцените работу:</p>
-                        </b>
-                        <input type="hidden" name="form_id" value="3">
-                        <div class="form-row">
-                            <div class="col-auto">
-                                <input name="crit" type="number" class="form-control" placeholder="Номер критерия">
+                    <div class="project-box years">
+                        <h4>2 этап - 75 баллов</h4>
+                        <form id="parse_xlsx_tests" method="post" enctype="multipart/form-data"
+                            style="margin-top: 10px;">
+                            <input type="hidden" name="form_id" value="excel_parse_tests">
+                            <div class="form-file form-file-lg mb-3">
+                                <p><b>Выберите файл .xls, чтобы добавить результаты:</b></p>
+                                <p style="margin: 15px; position: relative;"><em>Формат .xls файла: первый столбец - ID<br>
+                                        второй - <b>44 балла</b>, оценка комиссии по результатам защиты на предприятии<br>
+                                        третий - <b>11 баллов</b> – перекрестная оценка<br>
+                                        четвертый - <b>20 баллов</b> – своевременное выполнение всех этапов на портале<br>
+                                </em></p>
+                                <input type="file" name="file_add_admin" class="form-file-input" id="customFileLg">
+                                <label class="form-file-label" for="customFileLg">
+                                </label>
+                                <button type="submit" class="btn btn-primary">Подтвердить</button>
                             </div>
-                            <div class="col-auto">
-                                <p></p><input name="podcrit" type="number" class="form-control"
-                                    placeholder="Номер задачи"></p>
-                            </div>
-                            <div class="col">
-                                <p><input name="grade" type="number" class="form-control" placeholder="Балл"></p>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Подтвердить</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
