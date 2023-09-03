@@ -6,11 +6,7 @@ package-lock.json
 package.json
 pages/.DS_Store
 README.md
-<<<<<<< HEAD
-db/
-=======
 db/
 db_old/
 uploads/
 package-lock.json
->>>>>>> 558d91c68440d9006806d4e86f6df96907c10a2e
