@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Подтверждение файлов</title>
+    <title>Критерии</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="icon" href="../img/favicon.ico">
@@ -72,7 +72,7 @@
                         <polyline points="9 22 9 12 15 12 15 22" />
                     </svg>
                 </a>
-                <a href="table_all.html" class="app-sidebar-link">
+                <a href="../table_all.html" class="app-sidebar-link">
                     <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                         stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         class="feather feather-pie-chart" viewBox="0 0 24 24">
@@ -80,42 +80,17 @@
                         <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2v10z" />
                     </svg>
                 </a>
-                <a href="" class="app-sidebar-link">
-                    <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                        stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        class="feather feather-settings" viewBox="0 0 24 24">
-                        <defs />
-                        <circle cx="12" cy="12" r="3" />
-                        <path
-                            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
-                    </svg>
-                </a>
             </div>
             <div class="projects-section">
-                <div class="body" id="body">
-                    <button class="back_btn" onclick="location.href='profile_hr.html'">Назад</button>
-                    <form id="form_update">
-                        <b>
-                            <p>Прикрепленные файлы:</p>
-                        </b>
-                        <p><em>HR-менеджер выставляет баллы за прикрепленные пользователем файлы.</em></p>
-                        <input type="hidden" name="form_id" value="2">
-                        <div id="list" style="margin-bottom: 15px;">
-                            <div class="file_approve" style="margin-bottom: 15px;">
-                                <a href="http://example.com/kolbasa-primer.xlsx" download style="margin-right: 20px;">1 файл</a>
-                                <button type="button" class="btn btn-success">Ок</button>
-                                <button type="button" class="btn btn-secondary">Не ок</button>
-                            </div>
-                            <div class="file_approve" style="margin-bottom: 15px;">
-                                <a href="http://example.com/kolbasa-primer.xlsx" download style="margin-right: 20px;">2 файл</a>
-                                <button type="button" class="btn btn-success">Ок</button>
-                                <button type="button" class="btn btn-secondary">Не ок</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                <button class="back_btn" onclick="location.href='profile_admin.html'">Назад</button>
+                <a href="../inaccessible_crit.html" class="criterion_btn">1 критерий. <b>Проектная работа</b></a>
+                <a href="../inaccessible_crit.html" class="criterion_btn">2 критерий. <b>Успеваемость</b></a>
+                <a href="" class="criterion_btn">3 критерий. <b>Росатом для Росатома</b></a>
+                <a href="" class="criterion_btn">4 критерий. <b>Лидерское поведение</b></a>
+                <a href="" class="criterion_btn">5 критерий. <b>Проактивное развитие</b></a>
+                <a href="" class="criterion_btn">6 критерий. <b>Дополнительные баллы</b></a>
             </div>
-            <script src="./scripts/approve_files.js"></script>
+        </div>
 </body>
 
 </html>
