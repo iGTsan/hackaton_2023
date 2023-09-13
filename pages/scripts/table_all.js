@@ -2,8 +2,26 @@ let table = document.querySelector("table"); //табличка
 let tbody = table.querySelector("tbody");
 // var trs = table.getElementsByTagName("tr");
 
+
+function parseURL(name) {
+  let matches = window.location.search.match(new RegExp(
+    "[\?&]" + name + "=([^&]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+function getReqText() {
+  let res = "?form_id=get_table";
+  const div = parseURL("division");
+  if (div) {
+    res += `&division=${div}`;
+  }
+  return res;
+}
+
 let req = new XMLHttpRequest();
-req.open("GET", "?form_id=get_table", true);
+const req_text = getReqText();
+req.open("GET", req_text, true);
 req.onload = function (){
     fillTable(req.responseText);
 }

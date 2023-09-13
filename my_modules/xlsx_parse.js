@@ -36,12 +36,14 @@ module.exports.parse_for_users = async function(filename) {
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     let id_col = 'A';
     let code_col = 'B'
+    let div_col = 'C'
     let row_numb = 2;
     let res = []
     while (`${id_col}${row_numb}` in worksheet) {
       const id = worksheet[`${id_col}${row_numb}`].v;
-      let grade = worksheet[`${code_col}${row_numb}`].w;
-      res.push([id, grade]);
+      const code = worksheet[`${code_col}${row_numb}`].w;
+      const div = worksheet[`${div_col}${row_numb}`].v;
+      res.push([id, code, div]);
       row_numb++;
     }
     resolve(res);

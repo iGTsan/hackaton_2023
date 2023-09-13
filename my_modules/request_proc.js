@@ -193,8 +193,15 @@ function get_table(params) {
   return new Promise(function(resolve, reject) {
     try {
       db_funcs.open("database").then((db) => {
-        db_funcs.gen_rating(db).then((rating) => {
+        let rating_promise;
+        if (params["division"]) {
+          rating_promise = db_funcs.gen_division_rating(db, params["division"]);
+        } else {
+          rating_promise = db_funcs.gen_rating_table(db)
+        }
+        rating_promise.then((rating) => {
           let res = "";
+          // console.log(rating);
           rating.forEach((item, i) => {
             const row = `${item["ID"]} ${item["GRADE_1"]} ${item["GRADE_2"]} ${item["GRADE_3"]} ${item["GRADE_4"]} ${item["GRADE_5"]} ${item["TOTAL_GRADE"]}\n`
             res += row;
