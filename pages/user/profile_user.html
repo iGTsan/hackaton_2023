@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <title>Профиль пользователя</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-  <link rel="stylesheet" href="./style.css">
-  <link rel="icon" href="./img/favicon.ico">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="../img/favicon.ico">
 </head>
 
 <body>
@@ -185,8 +185,10 @@
                 <input type="hidden" name="form_id" value="crit_5">
                 <input type="hidden" id="user_id_post" name="user_id" value="">
                 <div class="project-box-content-header">
-                  <input type="file" placeholder="Загрузите сертификат" name="file_add1" class="form-file-input" id="customFileLg1">
-                  <input type="file" placeholder="Загрузите программу" name="file_add2" class="form-file-input" id="customFileLg2">  
+                  <input type="file" placeholder="Загрузите сертификат" name="file_add1" accept=".pdf" class="form-file-input"
+                    id="customFileLg1">
+                  <input type="file" placeholder="Загрузите программу" name="file_add2" accept=".pdf" class="form-file-input"
+                    id="customFileLg2">
                   <input type="submit" value="Отправить">
                 </div>
               </form>
@@ -194,7 +196,7 @@
           </div>
         </div>
 
-      <script src="./scripts/profile_user.js"></script>
+        <script src="../scripts/profile_user.js"></script>
 
 </body>
 
