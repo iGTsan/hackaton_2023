@@ -1,6 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const xlsx_parse = require("./xlsx_parse");
 const fs = require("fs");
+const db_funcs = require('./db')
 
 const TABLE_STRUCT = {
   "users" : "users(user_id, division) VALUES(?, ?)",
@@ -9,12 +10,77 @@ const TABLE_STRUCT = {
   "criterion_3" : "criterion_3(user_id) VALUES(?)",
   "criterion_4" : "criterion_4(user_id) VALUES(?)",
   "criterion_5" : "criterion_5(user_id) VALUES(?)",
-  "registered_users" : "registered_users(user_id, code, division) VALUES(?, ?, ?)"
+  "registered_users" : "registered_users(user_id, code, division) VALUES(?, ?, ?)",
+  "courses_list" : "courses_list(user_id, name_id, grade) VALUES(?, ?, ?)"
 };
 
+let databases_state = {
+  "database" : 0,
+  "test_w_names" : 0,
+  "users" : 0,
+}
+
+function get_name_id(db, name) {
+  const sql = `SELECT name_id FROM names WHERE name_ = '${name}'`;
+  return new Promise(function(resolve, reject) {
+    // console.log(sql);
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        throw err;
+      }
+      if (rows[0]) {
+        resolve(rows[0]["name_id"]);
+      } else {
+        resolve(undefined);
+      }
+    });
+  });
+}
+
+module.exports.is_test = async function(db, name) {
+  const sql = `SELECT is_test FROM names WHERE name_ = '${name}'`;
+  return new Promise(function(resolve, reject) {
+    // console.log(sql);
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        throw err;
+      }
+      if (rows[0]) {
+        // console.log(rows);
+        resolve(rows[0]["is_test"]);
+      } else {
+        resolve(undefined);
+      }
+    });
+  });
+}
+
+module.exports.insert_course = async function (db, tablename, values) {
+  name_id = await get_name_id(db, values["name"]);
+
+  if (!name_id) {
+    return console.log("No such name");
+  }
+  if (!(tablename in TABLE_STRUCT)) {
+    return console.log(`No such table ${tablename}`);
+  }
+  const querry = `INSERT INTO ${TABLE_STRUCT[tablename]}`;
+  values = [values["user_id"], name_id, values["grade"]];
+  db.run(querry, values, function(err) {
+    if (err) {
+      console.log(`INSERT INTO ${TABLE_STRUCT[tablename]}`);
+      console.log(values);
+      return console.log("Error", err.message);
+    }
+    // get the last insert id
+    console.log(values);
+    console.log(`A row has been inserted with rowid ${this.lastID}`);
+  });
+}
+
 module.exports.insert = async function (db, tablename, values) {
-  if (!tablename in TABLE_STRUCT) {
-    return console.log("No such table");
+  if (!(tablename in TABLE_STRUCT)) {
+    return console.log(`No such table ${tablename}`);
   }
   const querry = `INSERT INTO ${TABLE_STRUCT[tablename]}`;
   db.run(querry, values, function(err) {
@@ -143,22 +209,39 @@ function sleep(ms) {
 }
 
 module.exports.open = async function (filename) {
-  return new Promise(function(resolve, reject) {
-    let db = new sqlite3.Database(`./db/${filename}.db`, sqlite3.OPEN_READWRITE, (err) => {
-      if (err) {
-        create_db(filename).then(res => {
-          if (res == undefined) {
-            console.log("Can't create DB in open");
-            console.error(err);
-          }
+  if (databases_state[filename] == 0) {
+    databases_state[filename] = 1;
+    return new Promise(function(resolve, reject) {
+      let db = new sqlite3.Database(`./db/${filename}.db`, sqlite3.OPEN_READWRITE, (err) => {
+        if (err) {
+          create_db(filename).then(res => {
+            if (res == undefined) {
+              console.log("Can't create DB in open");
+              console.error(err);
+            }
+            databases_state[filename] = res;
+            resolve(res);
+          });
+        } else {
+          console.log(`Connected to the SQlite database ${filename}.db.`);
+          databases_state[filename] = db;
+          resolve(db);
+        }
+      });
+    });
+  } else if (databases_state[filename] == 1) {
+    return new Promise(function(resolve, reject) {
+      sleep(100).then(res => {
+        db_funcs.open(filename).then(res => {
           resolve(res);
         });
-      } else {
-        console.log(`Connected to the SQlite database ${filename}.db.`);
-        resolve(db);
-      }
+      });
     });
-  });
+  } else {
+    return new Promise(function(resolve, reject) {
+      resolve(databases_state[filename]);
+    });
+  }
 }
 
 module.exports.add_grade = async function (db, user_id, criterion, grade_num, grade) {
