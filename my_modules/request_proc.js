@@ -76,7 +76,7 @@ function user_file_upload(params) {
 
 function add_test_w_name(params) {
   db_funcs.open("test_w_names").then((db) => {
-    db_funcs.insert_course(db, "courses_list", params);
+    db_funcs.insert_course(db, params);
   });
 }
 

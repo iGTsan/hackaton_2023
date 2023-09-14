@@ -20,8 +20,8 @@ let databases_state = {
   "users" : 0,
 }
 
-function get_name_id(db, name) {
-  const sql = `SELECT name_id FROM names WHERE name_ = '${name}'`;
+function get_field_from_courses(db, name, field) {
+  const sql = `SELECT ${field} FROM names WHERE name_ = '${name}'`;
   return new Promise(function(resolve, reject) {
     // console.log(sql);
     db.all(sql, [], (err, rows) => {
@@ -29,53 +29,32 @@ function get_name_id(db, name) {
         throw err;
       }
       if (rows[0]) {
-        resolve(rows[0]["name_id"]);
+        resolve(rows[0][field]);
       } else {
         resolve(undefined);
       }
     });
   });
+
+}
+
+function get_name_id(db, name) {
+  return get_field_from_courses(db, name, "name_id");
 }
 
 module.exports.is_test = async function(db, name) {
-  const sql = `SELECT is_test FROM names WHERE name_ = '${name}'`;
-  return new Promise(function(resolve, reject) {
-    // console.log(sql);
-    db.all(sql, [], (err, rows) => {
-      if (err) {
-        throw err;
-      }
-      if (rows[0]) {
-        // console.log(rows);
-        resolve(rows[0]["is_test"]);
-      } else {
-        resolve(undefined);
-      }
-    });
-  });
+  return get_field_from_courses(db, name, "is_test");
 }
 
-module.exports.insert_course = async function (db, tablename, values) {
-  name_id = await get_name_id(db, values["name"]);
+module.exports.insert_course = async function (db, params) {
+  name_id = await get_name_id(db, params["name"]);
 
   if (!name_id) {
-    return console.log("No such name");
+    return console.log(`No such name ${params["name"]}`);
   }
-  if (!(tablename in TABLE_STRUCT)) {
-    return console.log(`No such table ${tablename}`);
-  }
-  const querry = `INSERT INTO ${TABLE_STRUCT[tablename]}`;
-  values = [values["user_id"], name_id, values["grade"]];
-  db.run(querry, values, function(err) {
-    if (err) {
-      console.log(`INSERT INTO ${TABLE_STRUCT[tablename]}`);
-      console.log(values);
-      return console.log("Error", err.message);
-    }
-    // get the last insert id
-    console.log(values);
-    console.log(`A row has been inserted with rowid ${this.lastID}`);
-  });
+
+  const values = [params["user_id"], name_id, params["grade"]];
+  db_funcs.insert(db, "courses_list", values);
 }
 
 module.exports.insert = async function (db, tablename, values) {
