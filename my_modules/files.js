@@ -31,7 +31,7 @@ async function user_file_upload(files, fields, cnt) {
   // request_proc.proc_params(fields);
 }
 
-async function excel_parse(files, fields, cnt) {
+async function excel_add_users(files, fields, cnt) {
   if (cnt != 1)
     return;
 
@@ -114,7 +114,7 @@ async function crit_1_year_1(files, fields, cnt) {
     return;
 
   const filename = files['file_add_admin'].filepath;
-  const grades = await xlsx_parse.parse_for_grades(filename);
+  const grades = await xlsx_parse.ID_grade_parse(filename);
   fs.unlinkSync(filename);
 
   confirm_test_results(grades, 1);
@@ -171,7 +171,7 @@ const FORMS_ROUTE = {
   '2_crit_2_year' : crit_2_year_2,
   '6_crit' : crit_6,
   'excel_parse_tests' : excel_parse_tests,
-  'excel_parse' : excel_parse,
+  'excel_parse' : excel_add_users,
   'crit_5' : user_file_upload
 }
 

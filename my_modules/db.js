@@ -230,6 +230,7 @@ module.exports.add_grade = async function (db, user_id, criterion, grade_num, gr
               WHERE user_id = ?`;
   db.run(sql, data, function(err) {
     if (err) {
+      console.log(sql);
       return console.error(err.message);
     }
     console.log(`Row(s) updated: ${this.changes}`);
@@ -264,12 +265,12 @@ async function get_rows(db, sql) {
 module.exports.gen_rating_table = async function (db) {
   const sql = `SELECT users.user_id as ID,
                 users.division as DIVISION,
-                (criterion_1.grade_1 + criterion_1.grade_2) as GRADE_1,
+                (criterion_1.grade_1 + criterion_1.grade_2 + criterion_1.grade_3) as GRADE_1,
                 (criterion_2.grade_1 + criterion_2.grade_2) as GRADE_2,
                 (criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4) as GRADE_3,
                 (criterion_4.grade_1 + criterion_4.grade_2) as GRADE_4,
                 (criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) as GRADE_5,
-                (criterion_1.grade_1 + criterion_1.grade_2 +
+                (criterion_1.grade_1 + criterion_1.grade_2 + criterion_1.grade_3 +
                 criterion_2.grade_1 + criterion_2.grade_2 +
                 criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4 +
                 criterion_4.grade_1 + criterion_4.grade_2 +
@@ -285,7 +286,7 @@ module.exports.gen_rating_table = async function (db) {
                 ON users.user_id = criterion_4.user_id
                 INNER JOIN criterion_5
                 ON users.user_id = criterion_5.user_id
-                ORDER BY (criterion_1.grade_1 + criterion_1.grade_2 +
+                ORDER BY (criterion_1.grade_1 + criterion_1.grade_2 + criterion_1.grade_3 +
                 criterion_2.grade_1 + criterion_2.grade_2 +
                 criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4 +
                 criterion_4.grade_1 + criterion_4.grade_2 +
@@ -294,17 +295,17 @@ module.exports.gen_rating_table = async function (db) {
 }
 
 module.exports.gen_user_rating = async function(db, user_id) {
-  const sql = `SELECT users.user_id as ID,
-                criterion_1.grade_1 as d1, criterion_1.grade_2 as d2,
-                criterion_2.grade_1 as d3, criterion_2.grade_2 as d4,
-                criterion_3.grade_1 as d5, criterion_3.grade_2 as d6, criterion_3.grade_3 as d7, criterion_3.grade_4 as d8,
-                criterion_4.grade_1 as d9, criterion_4.grade_2 as d10,
-                criterion_5.grade_1 as d11, criterion_5.grade_2 as d12, criterion_5.grade_3 as d13, criterion_5.grade_4 as d14, criterion_5.grade_5 as d15,
-                (criterion_1.grade_1 + criterion_1.grade_2 +
+  const sql = `SELECT 
+                criterion_1.grade_1 as d1_1, criterion_1.grade_2 as d1_2, criterion_1.grade_3 as d1_3,
+                criterion_2.grade_1 as d2_1, criterion_2.grade_2 as d2_2,
+                criterion_3.grade_1 as d3_1, criterion_3.grade_2 as d3_2, criterion_3.grade_3 as d3_3, criterion_3.grade_4 as d3_4,
+                criterion_4.grade_1 as d4_1, criterion_4.grade_2 as d4_2,
+                criterion_5.grade_1 as d5_1, criterion_5.grade_2 as d5_2, criterion_5.grade_3 as d5_3, criterion_5.grade_4 as d5_4, criterion_5.grade_5 as d5_5,
+                (criterion_1.grade_1 + criterion_1.grade_2 + criterion_1.grade_3 +
                 criterion_2.grade_1 + criterion_2.grade_2 +
                 criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4 +
                 criterion_4.grade_1 + criterion_4.grade_2 +
-                criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) as d16
+                criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) as d6
                 FROM users
                 INNER JOIN criterion_1
                 ON users.user_id = criterion_1.user_id
@@ -323,12 +324,12 @@ module.exports.gen_user_rating = async function(db, user_id) {
 module.exports.gen_division_rating = async function(db, division_id) {
   const sql = `SELECT users.user_id as ID,
                 users.division as DIVISION,
-                (criterion_1.grade_1 + criterion_1.grade_2) as GRADE_1,
+                (criterion_1.grade_1 + criterion_1.grade_2 + criterion_1.grade_3) as GRADE_1,
                 (criterion_2.grade_1 + criterion_2.grade_2) as GRADE_2,
                 (criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4) as GRADE_3,
                 (criterion_4.grade_1 + criterion_4.grade_2) as GRADE_4,
                 (criterion_5.grade_1 + criterion_5.grade_2 + criterion_5.grade_3 + criterion_5.grade_4 + criterion_5.grade_5) as GRADE_5,
-                (criterion_1.grade_1 + criterion_1.grade_2 +
+                (criterion_1.grade_1 + criterion_1.grade_2 + criterion_1.grade_3 +
                 criterion_2.grade_1 + criterion_2.grade_2 +
                 criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4 +
                 criterion_4.grade_1 + criterion_4.grade_2 +
@@ -345,7 +346,7 @@ module.exports.gen_division_rating = async function(db, division_id) {
                 INNER JOIN criterion_5
                 ON users.user_id = criterion_5.user_id
                 WHERE users.division = ${division_id}
-                ORDER BY (criterion_1.grade_1 + criterion_1.grade_2 +
+                ORDER BY (criterion_1.grade_1 + criterion_1.grade_2 + criterion_1.grade_3 +
                 criterion_2.grade_1 + criterion_2.grade_2 +
                 criterion_3.grade_1 + criterion_3.grade_2 + criterion_3.grade_3 + criterion_3.grade_4 +
                 criterion_4.grade_1 + criterion_4.grade_2 +

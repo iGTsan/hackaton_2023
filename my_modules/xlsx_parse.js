@@ -65,7 +65,7 @@ module.exports.ID_grade_parse = async function(filename) {
     let res = []
     while (`${id_col}${row_numb}` in worksheet) {
       const id = worksheet[`${id_col}${row_numb}`].v;
-      let grade = worksheet[`${grade_col}${row_numb}`].v;
+      let grade = worksheet[`${grade_col}${row_numb}`].w;
       grade = +grade.match(/^[0-9]+/)[0];
       res.push([id, grade]);
       row_numb++;
@@ -91,11 +91,11 @@ module.exports.ID_grade_grade_grade_parse = async function(filename) {
     let res = []
     while (`${id_col}${row_numb}` in worksheet) {
       const id = worksheet[`${id_col}${row_numb}`].v;
-      let grade1 = worksheet[`${grade1_col}${row_numb}`].v;
+      let grade1 = worksheet[`${grade1_col}${row_numb}`].w;
       grade1 = +grade1.match(/^[0-9]+/)[0];
-      let grade2 = worksheet[`${grade2_col}${row_numb}`].v;
+      let grade2 = worksheet[`${grade2_col}${row_numb}`].w;
       grade2 = +grade2.match(/^[0-9]+/)[0];
-      let grade3 = worksheet[`${grade3_col}${row_numb}`].v;
+      let grade3 = worksheet[`${grade3_col}${row_numb}`].w;
       grade3 = +grade3.match(/^[0-9]+/)[0];
       res.push([id, grade1, grade2, grade3]);
       row_numb++;
@@ -121,7 +121,7 @@ module.exports.ID_name_grade_parse = async function(filename) {
     while (`${id_col}${row_numb}` in worksheet) {
       const id = worksheet[`${id_col}${row_numb}`].v;
       const name = worksheet[`${name_col}${row_numb}`].w;
-      let grade = worksheet[`${grade_col}${row_numb}`].v;
+      let grade = worksheet[`${grade_col}${row_numb}`].w;
       grade = +grade.match(/^[0-9]+/)[0];
       res.push([id, name, grade]);
       row_numb++;
