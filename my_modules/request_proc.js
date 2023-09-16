@@ -2,11 +2,12 @@ const db_funcs = require("./db");
 const fs = require("fs");
 
 const GRADES = {
-  1 : 5,
-  2 : 5,
-  3 : 5,
-  4 : 5,
-  5 : 5
+  '1' : 5,
+  '2_test' : 5,
+  '2_course' : 3,
+  '3' : 5,
+  '4' : 5,
+  '5' : 5
 }
 
 module.exports.parse_params = async function(url) {
@@ -62,22 +63,75 @@ function hr_update_grades(params) {
 function hr_file_upload(params) {
   params["crit"] = 3;
   params["podcrit"] = params["listGroupTask"];
-  params["grade"] = GRADES[params["crit"]];
+  params["grade"] = GRADES[`${params["crit"]}`];
   return update_grades(params);
 }
 
 function user_file_upload(params) {
   params["crit"] = 5;
   params["podcrit"] = 1;
-  params["grade"] = GRADES[params["crit"]];
+  params["grade"] = GRADES[`${params["crit"]}`];
   return update_grades(params);
 }
 
-function update_tests(params) {
-  params["crit"] = 4;
-  params["podcrit"] = 1;
-  params["grade"] = (GRADES[4] * params["grade"]) / 100;
-  return set_grades(params);
+function add_test_w_name(params) {
+  db_funcs.open("test_w_names").then((db) => {
+    db_funcs.insert_course(db, params);
+  });
+}
+
+function is_test(name) {
+  return new Promise(function(resolve, reject) {
+    db_funcs.open("test_w_names").then((db) => {
+      db_funcs.is_test(db, name).then (res => {
+        if (res == undefined) {
+          console.log(`Can't find is ${name} test or not`);
+        }
+        resolve(res);
+      });
+    });
+  });
+}
+
+function get_grade(grade, params) {
+  if (params["is_test"]) {
+    return (grade - 50) * GRADES[`${params["crit"]}_test`] * 2 / 100;
+  }
+  if (grade > 0) {
+    return GRADES[`${params["crit"]}_course`];
+  } else {
+    return 0;
+  }
+}
+
+async function update_tests(params) {
+  console.log(params);
+  // params["crit"] = 4;
+  params["is_test"] = await is_test(params["name"]);
+  let summ = 0;
+  if (params["podcrit_1"]) {
+    params["podcrit"] = 1;
+    params["grade"] = get_grade(params["podcrit_1"], params);
+    summ += params["grade"];
+    update_grades(params);
+  }
+  if (params["podcrit_2"]) {
+    params["podcrit"] = 2;
+    params["grade"] = get_grade(params["podcrit_2"], params);
+    summ += params["grade"];
+    update_grades(params);
+  }
+  if (params["podcrit_3"]) {
+    params["podcrit"] = 3;
+    params["grade"] = get_grade(params["podcrit_3"], params);
+    summ += params["grade"];
+    update_grades(params);
+  }
+  if (params["name"]) {
+    params["grade"] = summ;
+    add_test_w_name(params);
+  }
+  return null;
 }
 
 function check(db, params) {
@@ -304,7 +358,7 @@ function approve_file(params) {
   params = ParseFilename(params["filename"]);
   params["crit"] = params["crit"];
   params["podcrit"] = params["podcrit"];
-  params["grade"] = GRADES[params["crit"]];
+  params["grade"] = GRADES[`${params["crit"]}`];
   return update_grades(params);
 }
 

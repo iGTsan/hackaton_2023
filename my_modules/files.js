@@ -72,14 +72,104 @@ async function excel_parse_tests(files, fields, cnt) {
   });
 }
 
+function confirm_test_results(results, crit) {
+  results.forEach((row) => {
+    let params = {
+      'form_id' : 'update_tests'
+    };
+    params['user_id'] = row[0];
+    params['crit'] = crit;
+    params['podcrit_1'] = row[1];
+    if (row.length > 2) {
+      params['podcrit_2'] = row[2];
+    }
+    if (row.length > 3) {
+      params['podcrit_3'] = row[3];
+    }
+    request_proc.proc_params(params);
+  });
+}
+
+function confirm_test_w_names_results(results, crit) {
+  results.forEach((row) => {
+    let params = {
+      'form_id' : 'update_tests'
+    };
+    params['user_id'] = row[0];
+    params['crit'] = crit;
+    params['name'] = row[1];
+    params['podcrit_1'] = row[2];
+    if (row.length > 3) {
+      params['podcrit_2'] = row[3];
+    }
+    if (row.length > 4) {
+      params['podcrit_3'] = row[4];
+    }
+    request_proc.proc_params(params);
+  });
+}
+
+async function crit_1_year_1(files, fields, cnt) {
+  if (cnt != 1)
+    return;
+
+  const filename = files['file_add_admin'].filepath;
+  const grades = await xlsx_parse.parse_for_grades(filename);
+  fs.unlinkSync(filename);
+
+  confirm_test_results(grades, 1);
+}
+
+async function crit_1_year_2(files, fields, cnt) {
+  if (cnt != 1)
+    return;
+
+  const filename = files['file_add_admin'].filepath;
+  const grades = await xlsx_parse.ID_grade_grade_grade_parse(filename);
+  fs.unlinkSync(filename);
+  
+  confirm_test_results(grades, 1);
+}
+
+async function crit_2_year_1(files, fields, cnt) {
+  if (cnt != 1)
+    return;
+
+  const filename = files['file_add_admin'].filepath;
+  const grades = await xlsx_parse.ID_name_grade_parse(filename);
+  fs.unlinkSync(filename);
+  
+  confirm_test_w_names_results(grades, 2);
+}
+
+async function crit_2_year_2(files, fields, cnt) {
+  if (cnt != 1)
+    return;
+
+  const filename = files['file_add_admin'].filepath;
+  const grades = await xlsx_parse.ID_name_grade_parse(filename);
+  fs.unlinkSync(filename);
+  
+  confirm_test_w_names_results(grades, 2);
+}
+
+async function crit_6(files, fields, cnt) {
+  if (cnt != 1)
+    return;
+
+  const filename = files['file_add_admin'].filepath;
+  const grades = await xlsx_parse.ID_name_grade_parse(filename);
+  fs.unlinkSync(filename);
+  
+  confirm_test_w_names_results(grades, 6);
+}
+
 const FORMS_ROUTE = {
-  // '1' : proc_id,
-  // '2' : hr_update_grades,
-  // '3' : admin_update_grades,
-  // '4' : hr_file_upload,
-  // '5' : user_file_upload,
-  // '6' : update_rating,
-  // 'login' : user_login,
+  '1_crit_1_year' : crit_1_year_1,
+  '1_crit_2_year' : crit_1_year_2,
+  '2_crit_1_year' : crit_2_year_1,
+  '2_crit_2_year' : crit_2_year_2,
+  '6_crit' : crit_6,
   'excel_parse_tests' : excel_parse_tests,
   'excel_parse' : excel_parse,
   'crit_5' : user_file_upload
