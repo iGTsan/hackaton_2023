@@ -94,13 +94,17 @@ function is_test(name) {
 }
 
 function get_grade(grade, params) {
-  if (params["is_test"]) {
-    return (grade - 50) * GRADES[`${params["crit"]}_test`] * 2 / 100;
-  }
-  if (grade > 0) {
-    return GRADES[`${params["crit"]}_course`];
-  } else {
-    return 0;
+  if (params["crit"] == 1) {
+    return grade;
+  } else if (params["crit"] == 2) {
+    if (params["is_test"]) {
+      return (grade - 50) * GRADES[`${params["crit"]}_test`] * 2 / 100;
+    }
+    if (grade > 0) {
+      return GRADES[`${params["crit"]}_course`];
+    } else {
+      return 0;
+    }
   }
 }
 
@@ -158,8 +162,8 @@ function check(db, params) {
   });
 }
 
-async function generate_bad_login() {
-  console.log("Bad login");
+async function generate_bad_login(params) {
+  console.log(`Bad login Id: ${params["user_id"]}, Code: ${params["code"]}`);
   // text = await fs.promises.readFile("./pages/profile_error.html");
   text = "No such user";
   return text;
@@ -175,8 +179,8 @@ async function generate_good_login(params) {
       rating_promise.then((rating) => {
         rating = rating[0];
         console.log(rating);
-        for (let i = 1; i <= 16; i++) {
-          text += `${rating[`d${i}`]} `;
+        for (const key of Object.keys(rating)) {
+          text += `${rating[key]} `;
         }
         text += `\n${params["user_id"]} ${params["code"]}`;
         resolve(text);
@@ -197,12 +201,12 @@ function user_login(params) {
           generate_good_login_promise = generate_good_login(params);
           generate_good_login_promise.then((text) => {
             resolve(text);
-            db.close();
+            // db.close();
           })
           // db_funcs.get_rating(db);
         }, (err) => {
-          resolve(generate_bad_login());
-          db.close();
+          resolve(generate_bad_login(params));
+          // db.close();
         })
       })
     } catch (err) {
@@ -281,12 +285,12 @@ function get_user_info(params) {
           generate_good_login_promise = generate_good_login(params);
           generate_good_login_promise.then((text) => {
             resolve(text);
-            db.close();
+            // db.close();
           })
           // db_funcs.get_rating(db);
         }, (err) => {
           resolve(generate_bad_login());
-          db.close();
+          // db.close();
         })
       })
     } catch (err) {

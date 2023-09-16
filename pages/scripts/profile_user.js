@@ -21,17 +21,17 @@ function parse(data) {
 }
 
 function fillInfo(data) {
-  const crit_1 = +data[0] + +data[1];
-  const crit_2 = +data[2] + +data[3];
-  const crit_3 = +data[4] + +data[5] + +data[6] + +data[7];
-  const crit_4 = +data[8] + +data[9];
-  const crit_5 = +data[10] + +data[11] + +data[12] + +data[13] + +data[14];
+  const crit_1 = +data[0] + +data[1] + +data[2];
+  const crit_2 = +data[3] + +data[4];
+  const crit_3 = +data[5] + +data[6] + +data[7] + +data[8];
+  const crit_4 = +data[9] + +data[10];
+  const crit_5 = +data[11] + +data[12] + +data[13] + +data[14] + +data[15];
   crit_1_holder.textContent = crit_1;
   crit_2_holder.textContent = crit_2;
   crit_3_holder.textContent = crit_3;
   crit_4_holder.textContent = crit_4;
   crit_5_holder.textContent = crit_5;
-  sum_crit.textContent = data[15];
+  sum_crit.textContent = data[16];
   // console.log(data);
 }
 
