@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Профиль руководителя</title>
+  <title>Общий рейтинг</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" href="../img/favicon.ico">
 </head>
@@ -61,7 +62,7 @@
     </div>
     <div class="app-content">
       <div class="app-sidebar">
-        <a href="profile_admin.html" class="app-sidebar-link active">
+        <a href="../admin/profile_admin.html" class="app-sidebar-link">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             class="feather feather-home">
@@ -69,7 +70,7 @@
             <polyline points="9 22 9 12 15 12 15 22" />
           </svg>
         </a>
-        <a href="table_all.html" class="app-sidebar-link">
+        <a href="table_all.html" class="app-sidebar-link active">
           <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
             stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             class="feather feather-pie-chart" viewBox="0 0 24 24">
@@ -80,9 +81,9 @@
       </div>
       <div class="projects-section">
         <div class="projects-section-header">
-          <p>Резервисты</p>
+          <p>Общий рейтинг резервистов</p>
         </div>
-        <!-------------HEADER LINE--------------->
+
         <div class="projects-section-line">
           <div class="projects-status">
             <div class="item-status">
@@ -97,44 +98,26 @@
               <span class="status-number">632</span>
               <span class="status-type">Всего</span>
             </div>
-            <button class="days-left" style="background-color: rgb(214, 214, 255);"
-              onclick="location.href='table_all.html'">Общий рейтинг</button>
-            <button class="days-left" style="background-color: rgb(214, 214, 255); margin-left: 10px;"
-              onclick="location.href='profile_admin_change.html'">Изменить данные вручную</button>
-            <button class="days-left" style="background-color: rgb(214, 214, 255); margin-left: 10px;"
-              onclick="location.href='excel_add_users.html'">Загрузить excel</button>
-            <button class="days-left" style="background-color: rgb(214, 214, 255); margin-left: 10px;"
-              onclick="location.href='crit_admin.html'">Критерии</button>
+            <button class="days-left" style="background-color: rgb(214, 214, 255);" onclick="location.href='table_all.html'""">Общий рейтинг</button>
           </div>
         </div>
-        <!---------------------------->
-        <div class="project-boxes jsGridView">
-          <div class="project-box-wrapper">
-            <div class="project-box" style="background-color: #fee4cb;">
-              <div class="project-box-content-header">
-                <p class="box-content-header">1 подразделение</p>
-                <p class="box-content-subheader">Гринатом</p>
-              </div>
-              <div class="box-progress-wrapper">
-                <p class="box-progress-header">Прогресс обучения</p>
-                <div class="box-progress-bar">
-                  <span class="box-progress" style="width: 60%; background-color: #ff942e"></span>
-                </div>
-                <p class="box-progress-percentage">60%</p>
-              </div>
-              <div class="project-box-footer">
-                <div class="days-left" style="color: #ff942e;">
-                  <a href="table_all.html">Посмотреть рейтинг</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- new division div class="project-box-wrapper here --> 
-
-        <!-- ----- -->
-      </div>
-    </div>
+        <table class="table">
+            <thead class="thead-light">
+                <tr class="bg-primary">
+                    <th scope="col">№</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">1 критерий</th>
+                    <th scope="col">2 критерий</th>
+                    <th scope="col">3 критерий</th>
+                    <th scope="col">4 критерий</th>
+                    <th scope="col">5 критерий</th>
+                    <th scope="col">Всего</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+       
+      <script src="../scripts/table_all.js"></script>
 </body>
-
 </html>
