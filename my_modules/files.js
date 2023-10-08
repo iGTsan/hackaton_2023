@@ -6,8 +6,28 @@ const xlsx_parse = require('./xlsx_parse')
 
 const UPLOAD_DIR = "./uploads"
 
+function create_folder(path) {
+  return new Promise(function(resolve, reject) {
+    fs.access(path, fs.constants.F_OK, (err) => {
+      if (err) {// Создаем папку
+        fs.mkdir(path, { recursive: true }, (err) => {
+          if (err) {
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        });
+      } else {
+        resolve(false);
+      }
+    });
+  });
+}
+
+module.exports.create_folder = create_folder;
 
 async function rename_file(newName, file) {
+  await create_folder(UPLOAD_DIR);
   const oldPath = file.filepath;
   const newPath = UPLOAD_DIR + '/' + newName;
 
@@ -176,6 +196,7 @@ const FORMS_ROUTE = {
 }
 
 module.exports.ProcessPost = async function(request, response) {
+  await create_folder(UPLOAD_DIR);
 	const form = formidable({ multiples: true, uploadDir : UPLOAD_DIR});
 	// console.log(request);
 	form.parse(request, (err, fields, files) => {

@@ -2,6 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 const xlsx_parse = require("./xlsx_parse");
 const fs = require("fs");
 const db_funcs = require('./db')
+const files_funcs = require('./files')
 
 const TABLE_STRUCT = {
   "users" : "users(user_id, division) VALUES(?, ?)",
@@ -95,24 +96,6 @@ module.exports.add_users = async function (db_grades, db_users, file) {
   });
 }
 
-function create_folder(path) {
-  return new Promise(function(resolve, reject) {
-    fs.access(path, fs.constants.F_OK, (err) => {
-      if (err) {// Создаем папку
-        fs.mkdir(path, { recursive: true }, (err) => {
-          if (err) {
-            resolve(false);
-          } else {
-            resolve(true);
-          }
-        });
-      } else {
-        resolve(false);
-      }
-    });
-  });
-}
-
 async function run_sql_command(db, command) {
   return new Promise(function(resolve, reject) {
     // console.log(`Command: ${command} started`);
@@ -157,7 +140,7 @@ function create_db(filename) {
   return new Promise(function(resolve, reject) {
     let db = new sqlite3.Database(`./db/${filename}.db`, (err) => {
       if (err) {
-        create_folder('./db').then(created => {
+        files_funcs.create_folder('./db').then(created => {
           if (created) {
             console.log("Another try to create DB");
             create_db(filename).then(res => {
