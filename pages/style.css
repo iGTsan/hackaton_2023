@@ -1131,3 +1131,7 @@ body {
   -moz-box-shadow: 1px -1px 8px 4px rgba(34, 60, 80, 0.13);
   box-shadow: 1px -1px 8px 4px rgba(34, 60, 80, 0.13);
 }
+
+.form-file-input{
+  margin-bottom: 20px;
+}
