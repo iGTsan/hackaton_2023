@@ -83,7 +83,87 @@
             </div>
             <div class="projects-section">
                 <button class="back_btn" onclick="location.href='../crit_hr.html'">Назад</button>
+                <div class="project-box-content-header xls">
+                    <h3 style="margin-bottom: 20px;">Критерий №4. "Лидерское поведение"</h3>
+                    <div class="project-box-content-header">
+                        <form id="form_user_id">
+                            <div class="body">
+                                <p><b>Для оценки работы введите ID пользователя</b></p>
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label for="inputPassword6" class="col-form-label">ID пользователя:</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input name="user_id" type="number" class="form-control"
+                                            placeholder="ID пользователя">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary">Подтвердить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="project-box years">
+                        <h4>1 год</h4>
+                        <div class="body">
+                            <form id="form_update" class="hidden">
+                                <b>
+                                    <p>Выставите балл:</p>
+                                </b>
+                                <input type="hidden" name="form_id" value="4_crit_1_year">
+                                <div class="form-row">
+                                    <div class="col-auto">
+                                        <p>Ориентация на результат</p>
+                                        <input name="4_1" type="number" class="form-control">
+                                    </div>
+                                    <div class="col-auto">
+                                        <p>Готовность к изменениям</p>
+                                        <p></p><input name="4_2" type="number" class="form-control"></p>
+                                    </div>
+                                    <div class="col-auto">
+                                        <p>Ориентация на результат</p>
+                                        <p><input name="4_3" type="number" class="form-control">
+                                        </p>
+                                    </div>
+                                    <button style="margin-top: 20px;" type="submit"
+                                        class="btn btn-primary">Подтвердить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="project-box years">
+                        <h4>2 год</h4>
+                        <div class="body">
+                            <form id="form_update" class="hidden">
+                                <b>
+                                    <p>Выставите балл:</p>
+                                </b>
+                                <input type="hidden" name="form_id" value="4_crit_2_year">
+                                <div class="form-row">
+                                    <div class="col-auto">
+                                        <p>Ориентация на результат</p>
+                                        <input name="4_1" type="number" class="form-control">
+                                    </div>
+                                    <div class="col-auto">
+                                        <p>Готовность к изменениям</p>
+                                        <p></p><input name="4_2" type="number" class="form-control"></p>
+                                    </div>
+                                    <div class="col-auto">
+                                        <p>Ориентация на результат</p>
+                                        <p><input name="4_3" type="number" class="form-control">
+                                        </p>
+                                    </div>
+                                    <button style="margin-top: 20px;" type="submit"
+                                        class="btn btn-primary">Подтвердить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
 </body>
+<script src="../../scripts/hr.js"></script>
 
 </html>
